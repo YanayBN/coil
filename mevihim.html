@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מביכים ודרקונים</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+        @keyframes clickAnimation {
+            0% { transform: scale(1.1); }
+            50% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+        .button-hover {
+            transition: transform 0.3s ease;
+            border: 4px solid black;
+        }
+        .button-hover:hover {
+            transform: scale(1.1);
+        }
+        .button-hover:active {
+            animation: clickAnimation 0.45s;
+        }
+        .icon-space {
+            margin-left: 0.5em; /* Approximately one character width */
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8 text-center">
+        <img src="images/mevihim/mevihim_banner.png" alt="מביכים ודרקונים באנר" class="mx-auto mb-4 fade-in">
+
+        <div class="space-y-8">
+            <div class="section fade-in">
+                <h3 class="text-xl font-bold mb-4">לצפייה/האזנה לפודקאסט</h3>
+                <div class="flex justify-center items-center space-x-4 rtl:space-x-reverse">
+                    <a href="https://www.youtube.com/playlist?list=PL9W6LHxDXzdU8G7yaaD5c4lUTBTLiCcFs" target="_blank">
+  						<button class="button-hover px-4 py-2 bg-white text-black rounded flex items-center">
+    					<i class="fab fa-youtube icon-space"></i>יוטיוב
+  						</button>
+					</a>
+                    <a href="https://open.spotify.com/show/0Bz0Kt8W2BvPUfIAXQOVXJ?fbclid=IwAR2OsaFAglfEQ85-OPBw0Ugf6hd2mtEbor5tEmLkKhjTsyYT3RvA9aZtIhM" target="_blank" class="button-hover px-4 py-2 bg-white text-black rounded flex items-center" role="button">
+  <i class="fab fa-spotify icon-space"></i>ספוטיפיי
+</a>
+
+<a href="https://podcasts.apple.com/il/podcast/%D7%9E%D7%91%D7%99%D7%9B%D7%99%D7%9D-%D7%95%D7%93%D7%A8%D7%A7%D7%95%D7%A0%D7%99%D7%9D/id1550658533" target="_blank" class="button-hover px-4 py-2 bg-white text-black rounded flex items-center" role="button">
+  <i class="fab fa-apple icon-space"></i>אפל
+</a>
+
+<a href="https://www.facebook.com/groups/mevihim" target="_blank" class="button-hover px-4 py-2 bg-white text-black rounded flex items-center" role="button">
+  <i class="fas fa-users icon-space"></i>קבוצת הקהילה
+</a>
+                </div>
+            </div>
+
+            <div class="section fade-in">
+                <h3 class="text-xl font-bold mb-4">פרקי הבונוס</h3>
+                <div class="flex flex-wrap justify-center items-center gap-4">
+					<a href="https://www.facebook.com/YanayBN/videos/6233135926788400" target="_blank" class="button-hover px-4 py-2 bg-white text-black rounded flex items-center" role="button">
+					  <i class="fas fa-beer icon-space"></i>התגרה בטברנה - שודר אחרי עונה 5
+					</a>
+
+					<a href="haliveshelhamavet" target="_blank" class="button-hover px-4 py-2 bg-white text-black rounded flex items-center" role="button">
+					  <i class="fas fa-skull icon-space"></i>הלייב של המוות - צולם בין עונות 4-5
+					</a>
+
+					<a href="https://www.facebook.com/groups/mevihim/posts/1473728889634276/" target="_blank" class="button-hover px-4 py-2 bg-white text-black rounded flex items-center" role="button">
+					  <i class="fas fa-search icon-space"></i>משלחת חיפוש - שודר בין עונות 2-3
+					</a>                </div>
+            	</div>
+
+            <div class="section fade-in">
+                <h3 class="text-xl font-bold mb-4">רינגטון באנגר 100%</h3>
+                <div class="flex justify-center items-center">
+					<a href="https://archive.org/download/mevihim-skype/MevihimSkype.mp3" target="_blank" class="button-hover px-4 py-2 bg-white text-black rounded flex items-center" role="button">
+					  <i class="fas fa-music icon-space"></i>לחיצה ימנית/ארוכה - שמירה בשם
+					</a>
+                </div>
+            </div>
+
+            <div class="section fade-in">
+                <h3 class="text-xl font-bold mb-4">סטיקרים לווצאפ</h3>
+                <div class="flex justify-center items-center space-x-4 rtl:space-x-reverse">
+					<a href="https://archive.org/download/20230703_20230703_1218/%D7%9E%D7%91%D7%99%D7%9B%D7%99%D7%9D%20%D7%95%D7%93%D7%A8%D7%A7%D7%95%D7%A0%D7%99%D7%9D.wastickers" target="_blank" class="button-hover px-4 py-2 bg-white text-black rounded flex items-center" role="button">
+					  <i class="fas fa-download icon-space"></i>להורדה
+					</a>
+
+					<a href="mevihim-stickers-instructions.html" target="_blank" class="button-hover px-4 py-2 bg-white text-black rounded flex items-center" role="button">
+					  <i class="fas fa-info-circle icon-space"></i>הוראות התקנה
+					</a>                </div>
+            </div>
+
+            <div class="section fade-in">
+                <h3 class="text-xl font-bold mb-4">כל איורי הדמויות</h3>
+                <div class="flex justify-center items-center">
+					<a href="https://archive.org/download/s01-s04_characters/s01-s04_characters.zip" target="_blank" class="button-hover px-4 py-2 bg-white text-black rounded flex items-center" role="button">
+					  <i class="fas fa-images icon-space"></i>להורדה
+					</a>
+                </div>
+            </div>
+
+            <div class="section fade-in">
+                <h3 class="text-xl font-bold mb-4">דפי דמויות</h3>
+                <div class="flex flex-wrap justify-center items-center gap-4">
+					<a href="https://archive.org/download/mevihim_character_sheets_s01/%D7%A2%D7%95%D7%A0%D7%94%201.zip" target="_blank" class="button-hover px-4 py-2 bg-white text-black rounded flex items-center" role="button">
+					  <i class="fas fa-file-alt icon-space"></i>עונה 1
+					</a>
+
+					<a href="https://archive.org/download/mevihim_character_sheets_s02/%D7%A2%D7%95%D7%A0%D7%94%202.zip" target="_blank" class="button-hover px-4 py-2 bg-white text-black rounded flex items-center" role="button">
+					  <i class="fas fa-file-alt icon-space"></i>עונה 2
+					</a>
+
+					<a href="https://archive.org/download/mevihim_character_sheets_s03/%D7%A2%D7%95%D7%A0%D7%94%203.zip" target="_blank" class="button-hover px-4 py-2 bg-white text-black rounded flex items-center" role="button">
+					  <i class="fas fa-file-alt icon-space"></i>עונה 3
+					</a>
+
+					<a href="https://archive.org/download/mevihim_character_sheets_s04/%D7%A2%D7%95%D7%A0%D7%94%204.zip" target="_blank" class="button-hover px-4 py-2 bg-white text-black rounded flex items-center" role="button">
+					  <i class="fas fa-file-alt icon-space"></i>עונה 4
+					</a>
+
+					<a href="#" target="_blank" class="button-hover px-4 py-2 bg-white text-black rounded flex items-center" role="button">
+					  <i class="fas fa-file-alt icon-space"></i>עונה 5
+					</a>
+                </div>
+            </div>
+
+            <div class="section fade-in">
+                <h3 class="text-xl font-bold mb-4">חנות המרץ' של מביכים ודרקונים</h3>
+                <div class="flex justify-center items-center">
+					<a href="mevihim-store.html" class="button-hover px-4 py-2 bg-white text-black rounded flex items-center" role="button">
+					  <i class="fas fa-store icon-space"></i>כניסה לחנות
+					</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-12 mb-8 fade-in">
+            <div class="aspect-w-16 aspect-h-9 flex items-center justify-center">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/4fBL61NBJDY?si=m0XlVBI94CoxqwTC" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <a href="index.html" class="inline-block mt-8 px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors duration-300 fade-in button-hover">לעמוד הראשי</a>
+    </div>
+</body>
+</html>

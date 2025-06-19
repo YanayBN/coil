@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הוראות התקנה - סטיקרים למביכים ודרקונים</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        .button-hover {
+            transition: transform 0.3s ease;
+            border: 4px solid black;
+        }
+        .button-hover:hover {
+            transform: scale(1.1);
+        }
+        .button-hover:active {
+            animation: clickAnimation 0.45s;
+        }
+        .icon-space {
+            margin-left: 0.5em;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8 text-center">
+	<img src="images/mevihim/mevihim_banner.png" alt="מביכים ודרקונים באנר" class="mx-auto mb-4 fade-in">
+        <h2 class="text-2xl font-bold mb-6 fade-in">הוראות התקנה - סטיקרים לווצאפ</h2>
+
+        <div class="space-y-8">
+            <div class="section fade-in">
+                <h3 class="text-xl font-bold mb-4">שלב 1: מורידים את האפליקציה הזו - Sticker Maker Studio</h3>
+                <div class="flex justify-center items-center space-x-4 rtl:space-x-reverse">
+                    <a href="https://play.google.com/store/apps/details?id=com.marsvard.stickermakerforwhatsapp&fbclid=IwAR0u4g77GbgqxWT-rouZROafu3XYfkG7W99E5QK3VSSazUq1MtjruBelOJE" class="button-hover px-4 py-2 bg-white text-black rounded flex items-center" target="_blank" role="button">
+                        <i class="fab fa-android icon-space"></i>Android
+                    </a>
+                    <a href="https://apps.apple.com/us/app/sticker-maker-studio/id1443326857" class="button-hover px-4 py-2 bg-white text-black rounded flex items-center" target="_blank" role="button">
+                        <i class="fab fa-apple icon-space"></i>iOS
+                    </a>
+                </div>
+            </div>
+
+            <div class="section fade-in">
+                <h3 class="text-xl font-bold mb-4">שלב 2: מורידים את חבילת הסטיקרים</h3>
+                <div class="flex justify-center items-center">
+                    <a href="https://archive.org/download/20230703_20230703_1218/%D7%9E%D7%91%D7%99%D7%9B%D7%99%D7%9D%20%D7%95%D7%93%D7%A8%D7%A7%D7%95%D7%A0%D7%99%D7%9D.wastickers" class="button-hover px-4 py-2 bg-white text-black rounded flex items-center" target="_blank" role="button">
+                        <i class="fas fa-download icon-space"></i>להורדה
+                    </a>
+                </div>
+            </div>
+
+            <div class="section fade-in">
+                <h3 class="text-xl font-bold mb-4">שלב 3: פותחים את הקובץ עם האפליקציה (סטיקר מייקר)<br>ובוחרים add to my collection<br>ואז באפשרות add to WhatsApp</h3>
+            </div>
+
+            <div class="section fade-in">
+                <h3 class="text-xl font-bold mb-4">שלב 4 והכי חשוב: נהנים מאוד</h3>
+            </div>
+        </div>
+
+        <a href="mevihim.html" class="inline-block mt-8 px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors duration-300 fade-in button-hover">בחזרה ל"מביכים ודרקונים"</a>
+    </div>
+</body>
+</html>
