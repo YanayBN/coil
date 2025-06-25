@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ינאי בן נח - פורטפוליו</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        
+        header {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: normal;
+            opacity: 0.8;
+        }
+        
+        .gallery-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .slider-container {
+            position: relative;
+            overflow-x: auto;
+            margin-bottom: 2rem;
+            padding-bottom: 10px; /* Add padding for scrollbar */
+        }
+        
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .slider-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        /* Track */
+        .slider-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        /* Handle */
+        .slider-container::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        
+        /* Handle on hover */
+        .slider-container::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            min-width: max-content; /* Ensure content doesn't wrap */
+            padding: 10px 5px; /* Add some padding */
+        }
+        
+        .slide {
+            min-width: 320px;
+            height: 650px; /* Increased height to accommodate description */
+            margin-right: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            flex: 0 0 auto;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .slide-media {
+            height: 550px;
+            position: relative;
+            flex: 1;
+        }
+        
+        .slide iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .slide-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+        }
+        
+        .slide-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0,0,0,0); /* Removed the black overlay */
+            color: white;
+            padding: 8px;
+            font-size: 12px;
+            text-align: center;
+        }
+        
+        .slide-description {
+            padding: 12px;
+            background-color: #f9f9f9;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+            overflow-y: auto;
+            flex: 0 0 100px; /* Fixed height for description */
+            direction: rtl; /* Set text direction to right-to-left */
+            text-align: right; /* Align text to the right */
+            word-wrap: break-word; /* Break words as needed */
+            white-space: normal; /* Allow text to wrap */
+            line-height: 1.4; /* Adjust line height for better readability */
+        }
+        
+        .slider-controls {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .control-button {
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            margin: 0 10px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .control-button:hover {
+            background-color: #1a252f;
+        }
+        
+        .control-button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        
+        .loading-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            background-color: #f8f9fa;
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        /* Make sure all platforms' embeds appear properly */
+        .twitter-tweet, 
+        .instagram-media, 
+        .tiktok-embed,
+        .fb-post,
+        .youtube-embed {
+            margin: 0 auto !important;
+            max-width: 100% !important;
+            min-width: 100% !important;
+            width: 100% !important;
+            height: 100% !important;
+        }
+        
+        @media (max-width: 768px) {
+            .slide {
+                min-width: 280px;
+                height: 600px;
+            }
+            
+            .slide-media {
+                height: 500px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ינאי בן נח</h1>
+        <h2>קריאייטיב קופירייטר - פורטפוליו</h2>
+    </header>
+    
+    <div class="gallery-container">
+        <!-- Moved the slider controls above the gallery -->
+        <div class="slider-controls">
+            <button class="control-button" id="prev">←</button>
+            <button class="control-button" id="next">→</button>
+        </div>
+        
+        <div class="slider-container">
+            <div class="slider" id="slider">
+
+		<!-- embeds start here -->
+
+                <!-- YouTube embed -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe 
+                            src="https://www.youtube.com/embed/riPOfGQjQ_8" 
+                            title="YouTube video" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="slide-description">מאחורי הקלעים לסרט "מרשעת" עם שירי מימון</div>
+                </div>
+
+                <!-- Added Facebook embed as a new slide -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe
+                            src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fstory.php%3Fstory_fbid%3D1399365761277066%26id%3D100036109667995%26mibextid%3DwwXIfr%26rdid%3DFUTzr99KefpWqEap&width=320&height=550&show_text=true"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            scrolling="no"
+                            allowtransparency="true"
+                            allow="encrypted-media">
+                        </iframe>
+                    </div>
+                    <div class="slide-description">פרסומת לחומוס אליהו</div>
+                </div>
+
+                <!-- TikTok embed 1 -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe
+                            src="https://www.tiktok.com/embed/v2/7486512071664798984"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            allow="autoplay; encrypted-media">
+                        </iframe>
+                    </div>
+                    <div class="slide-description">סרטון ויראלי לקידום "מיינקראפט"</div>
+                </div>
+                
+                <!-- Added Gladiator 2 image as the first slide -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <img src="https://yanaybn.github.io/pf/gladiator2.jpeg" alt="Gladiator 2">
+                    </div>
+                    <div class="slide-description">שיווק גרילה לס_רט "גלדיאטור 2"</div>
+                </div>
+
+                <!-- TikTok embed -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe
+                            src="https://www.tiktok.com/embed/v2/7486028223554342151"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            allow="autoplay; encrypted-media">
+                        </iframe>
+                    </div>
+                    <div class="slide-description">מערכון מאחורי הקלעים לסרט "מיינקראפט" - דניס טל</div>
+                </div>
+                
+                <!-- Chicken Master -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <img src="https://yanaybn.github.io/pf/chickenmaster.png" alt="Gladiator 2">
+                    </div>
+                    <div class="slide-description">כתיבה לתסריט העברי של הסרט "צ'יקן מאסטר"</div>
+                </div>
+
+                <!-- TikTok embed -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe
+                            src="https://www.tiktok.com/embed/v2/7447171233914883335"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            allow="autoplay; encrypted-media">
+                        </iframe>
+                    </div>
+                    <div class="slide-description">המשפיענית רומי משה בשיווק ויראלי לסרט "אנורה"</div>
+                </div>
+
+                <!-- Instagram Post 1 -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe
+                            src="https://www.instagram.com/p/DHF441sNEMT/embed"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            scrolling="no"
+                            allowtransparency="true">
+                        </iframe>
+                    </div>
+                    <div class="slide-description">שיתוף פעולה עם "חיילים מצייצים" לסרט "חסין כאב"</div>
+                </div>
+
+                <!-- TikTok embed 1 -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe
+                            src="https://www.tiktok.com/embed/v2/7452334809155652871"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            allow="autoplay; encrypted-media">
+                        </iframe>
+                    </div>
+                    <div class="slide-description">המשפיען מאפין - שיווק ויראלי לסרט "סוניק 3"</div>
+                </div>
+
+                <!-- YouTube embed -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe 
+                            src="https://www.youtube.com/embed/GaoMf0ukcPM" 
+                            title="YouTube video" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="slide-description">סיכום תגובות מהקרנת הסרט "רובוטריקים"</div>
+                </div>
+
+                <!-- TikTok embed 1 -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe
+                            src="https://www.tiktok.com/embed/v2/7477230981187915026"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            allow="autoplay; encrypted-media">
+                        </iframe>
+                    </div>
+                    <div class="slide-description">המשפיען ינון בן שושן לסרט "מיקי 17"</div>
+                </div>
+
+                <!-- TikTok embed 1 -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe
+                            src="https://www.tiktok.com/embed/v2/7479811062997552392"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            allow="autoplay; encrypted-media">
+                        </iframe>
+                    </div>
+                    <div class="slide-description">המשפיענית נועה גרומב לסרט "איש הכלב"</div>
+                </div>
+                
+                <!-- TikTok embed -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe
+                            src="https://www.tiktok.com/embed/v2/7480568932638706952"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            allow="autoplay; encrypted-media">
+                        </iframe>
+                    </div>
+                    <div class="slide-description">תם שקד ("נינג'ה ישראל") לסרט "חסין כאב"</div>
+                </div>
+
+                <!-- YouTube embed -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe 
+                            src="https://www.youtube.com/embed/iO09S4wXTnE" 
+                            title="YouTube video" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="slide-description">טרנזלייט ת'יאטר - קטע קונספט מתוך הסטנדאפ</div>
+                </div>
+                
+                <!-- TikTok embed 3 -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe
+                            src="https://www.tiktok.com/embed/v2/7450144220376993032"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            allow="autoplay; encrypted-media">
+                        </iframe>
+                    </div>
+                    <div class="slide-description">קידום לסרט "סוניק 3" בניקלודיאון</div>
+                </div>
+                
+                <!-- TikTok embed 1 -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe
+                            src="https://www.tiktok.com/embed/v2/7460499012576218375"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            allow="autoplay; encrypted-media">
+                        </iframe>
+                    </div>
+                    <div class="slide-description">סרטון ויראלי לקידום הסרט "איש זאב"</div>
+                </div>
+                
+                <!-- Chicken Master 
+                <div class="slide">
+                    <div class="slide-media">
+                        <img src="https://yanaybn.github.io/pf/supercharlie.jpg" alt="Gladiator 2">
+                    </div>
+                    <div class="slide-description">כתיבה לתסריט העברי של הסרט "סופר צ'ארלי"</div>
+                </div>
+		-->
+
+
+                <!-- YouTube embed -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe 
+                            src="https://www.youtube.com/embed/y9v4Fm29N8c" 
+                            title="YouTube video" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="slide-description">הסטנדאפ של הגיקים - ספיישל הנוקמים</div>
+                </div>
+                
+                <!-- Added Wikipedia embed as the first slide -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe
+                            src="https://he.wikipedia.org/wiki/%D7%99%D7%97%D7%99%D7%93%D7%AA_%D7%94%D7%A2%D7%99%D7%9C%D7%99%D7%AA_(%D7%A1%D7%A8%D7%98,_2025)"
+                            width="100%"
+                            height="100%"
+                            frameborder="0">
+                        </iframe>
+                    </div>
+                    <div class="slide-description">עמוד ויקיפדיה לסרט "יחידת העילית"</div>
+                </div>
+                
+                <!-- TikTok embed 1 -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe
+                            src="https://www.tiktok.com/embed/v2/7486028220618329351"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            allow="autoplay; encrypted-media">
+                        </iframe>
+                    </div>
+                    <div class="slide-description">מערכון מאחורי הקלעים לסרט "מיינקראפט" עם דניס טל</div>
+                </div>
+                
+                <!-- TikTok embed 2 -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe
+                            src="https://www.tiktok.com/embed/v2/7452732734394354951"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            allow="autoplay; encrypted-media">
+                        </iframe>
+                    </div>
+                    <div class="slide-description">סרטון ויראלי לקידום הסרט "סוניק 3"</div>
+                </div>
+                
+                <!-- Instagram Post 1 -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe
+                            src="https://www.instagram.com/p/DDzKSk5ov18/embed"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            scrolling="no"
+                            allowtransparency="true">
+                        </iframe>
+                    </div>
+                    <div class="slide-description">תוכן סושיאלי לסרט - "סוניק 3"</div>
+                </div>
+
+                <!-- TikTok embed 1 -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe
+                            src="https://www.tiktok.com/embed/v2/7165446924097654017"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            allow="autoplay; encrypted-media">
+                        </iframe>
+                    </div>
+                    <div class="slide-description">סטנדאפ על המשחק God of War</div>
+                </div>
+
+                <!-- YouTube Shorts embed -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe 
+                            src="https://www.youtube.com/embed/FH15CjoKYHM" 
+                            title="YouTube video" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="slide-description">סרטון ויראלי לקידום הסרט "איש הכלב"</div>
+                </div>
+
+                <!-- YouTube embed -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe 
+                            src="https://www.youtube.com/embed/0slFjqd2AAQ" 
+                            title="YouTube video" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="slide-description">מביכים ודרקונים - משחק תפקידים עם סטנדאפיסטים</div>
+                </div>
+                
+                <!-- YouTube Shorts embed -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe 
+                            src="https://www.youtube.com/embed/NJ4RVuLcgxQ" 
+                            title="YouTube video" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="slide-description">המשפיען חמוצי - שיווק ויראלי ל"חסין כאב"</div>
+                </div>
+                
+                <!-- TikTok embed -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe
+                            src="https://www.tiktok.com/embed/v2/7480239120799780104"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            allow="autoplay; encrypted-media">
+                        </iframe>
+                    </div>
+                    <div class="slide-description">המשפיען רועי פיירוולף בשיווק ויראלי לסרט "חסין כאב"</div>
+                </div>
+                
+                <!-- YouTube Short -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe 
+                            src="https://www.youtube.com/embed/9POuKB-EHxU" 
+                            title="YouTube video" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="slide-description">המשפיען בלאקבירד בשיווק ויראלי לסרט "פחד אלוהים"</div>
+                </div>
+                
+                <!-- TikTok embed -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe
+                            src="https://www.tiktok.com/embed/v2/7447147367725354248"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            allow="autoplay; encrypted-media">
+                        </iframe>
+                    </div>
+                    <div class="slide-description">המשפיענית דניאל ויינריב בשיווק ויראלי לסרט "אנורה"</div>
+                </div>
+                
+                <!-- YouTube embed -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe 
+                            src="https://www.youtube.com/embed/sye7X44hciw" 
+                            title="YouTube video" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="slide-description">מאחורי הקלעים לסרט "מרשעת" עם שירי מימון</div>
+                </div>
+
+                <!-- TikTok embed 1 -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe
+                            src="https://www.tiktok.com/embed/v2/7486381655003794706"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            allow="autoplay; encrypted-media">
+                        </iframe>
+                    </div>
+                    <div class="slide-description">ראיון ב-60 שניות לסרט "מיינקראפט" עם דניס טל</div>
+                </div>
+                
+                <!-- Instagram Reel 1 -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe
+                            src="https://www.instagram.com/p/DHaxZP_IO5_/embed"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            scrolling="no"
+                            allowtransparency="true">
+                        </iframe>
+                    </div>
+                    <div class="slide-description">תוכן מלווה לסרט - "סוניק 3"</div>
+                </div>
+                                
+                <!-- TikTok embed -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe
+                            src="https://www.tiktok.com/embed/v2/7441949300738870561"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            allow="autoplay; encrypted-media">
+                        </iframe>
+                    </div>
+                    <div class="slide-description">המשפיען תומר כרמלי בשיווק ויראלי לסרט "פחד אלוהים"</div>
+                </div>
+                
+                <!-- TikTok embed 1 -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe
+                            src="https://www.tiktok.com/embed/v2/7486028223743003911"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            allow="autoplay; encrypted-media">
+                        </iframe>
+                    </div>
+                    <div class="slide-description">קידום לסרט "מיינקראפט" עם דניס טל</div>
+                </div>
+                
+                <!-- TikTok embed -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe
+                            src="https://www.tiktok.com/embed/v2/7441944007464324360"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            allow="autoplay; encrypted-media">
+                        </iframe>
+                    </div>
+                    <div class="slide-description">המשפיען בלאקבירד בשיווק ויראלי לסרט "פחד אלוהים"</div>
+                </div>
+                
+                <!-- TikTok embed -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe
+                            src="https://www.tiktok.com/embed/v2/7439632938813213959"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            allow="autoplay; encrypted-media">
+                        </iframe>
+                    </div>
+                    <div class="slide-description">סרטון ויראלי לקידום הסרט "מרשעת"</div>
+                </div>
+                
+                <!-- Instagram Reel 2 -->
+                <div class="slide">
+                    <div class="slide-media">
+                        <iframe
+                            src="https://www.instagram.com/p/DEPkpocIoME/embed"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            scrolling="no"
+                            allowtransparency="true">
+                        </iframe>
+                    </div>
+                    <div class="slide-description">תוכן ויראלי לסרט - "סוניק 3"</div>
+                </div>
+
+		<!-- embeds end here -->
+
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the DOM elements
+            const sliderContainer = document.querySelector('.slider-container');
+            const slider = document.getElementById('slider');
+            const slides = document.querySelectorAll('.slide');
+            const prevButton = document.getElementById('prev');
+            const nextButton = document.getElementById('next');
+            
+            // Calculate how many slides to show based on screen width
+            let slidesToShow = calculateSlidesToShow();
+            let slideWidth = calculateSlideWidth();
+            let currentIndex = 0;
+            
+            // Set initial button states
+            updateButtonStates();
+            
+            // Add event listeners to buttons
+            prevButton.addEventListener('click', slidePrev);
+            nextButton.addEventListener('click', slideNext);
+            
+            // Handle window resize
+            window.addEventListener('resize', handleResize);
+            
+            // Function to slide to the previous item
+            function slidePrev() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateSliderPosition();
+                }
+            }
+            
+            // Function to slide to the next item
+            function slideNext() {
+                if (currentIndex < slides.length - slidesToShow) {
+                    currentIndex++;
+                    updateSliderPosition();
+                }
+            }
+            
+            // Function to update the slider position
+            function updateSliderPosition() {
+                // Calculate the correct position based on slide width
+                const position = -currentIndex * slideWidth;
+                slider.style.transform = `translateX(${position}px)`;
+                
+                // Also scroll the container to match the slider position
+                sliderContainer.scrollLeft = currentIndex * slideWidth;
+                
+                // Update button states
+                updateButtonStates();
+            }
+            
+            // Function to update button states
+            function updateButtonStates() {
+                prevButton.disabled = currentIndex === 0;
+                nextButton.disabled = currentIndex >= slides.length - slidesToShow;
+                
+                prevButton.style.opacity = prevButton.disabled ? '0.5' : '1';
+                nextButton.style.opacity = nextButton.disabled ? '0.5' : '1';
+            }
+            
+            // Function to handle resize events
+            function handleResize() {
+                // Recalculate values
+                const newSlidesToShow = calculateSlidesToShow();
+                slideWidth = calculateSlideWidth();
+                
+                // Check if we need to adjust the current index
+                if (currentIndex > slides.length - newSlidesToShow) {
+                    currentIndex = Math.max(0, slides.length - newSlidesToShow);
+                }
+                
+                // Update slidesToShow if it changed
+                slidesToShow = newSlidesToShow;
+                
+                // Update slider position
+                updateSliderPosition();
+            }
+            
+            // Function to calculate how many slides to show
+            function calculateSlidesToShow() {
+                return window.innerWidth < 768 ? 1 : 
+                       window.innerWidth < 992 ? 2 : 3;
+            }
+            
+            // Function to calculate slide width
+            function calculateSlideWidth() {
+                const slide = slides[0];
+                const marginRight = parseInt(getComputedStyle(slide).marginRight);
+                return slide.offsetWidth + marginRight;
+            }
+            
+            // Enable manual horizontal scrolling while preserving button functionality
+            sliderContainer.addEventListener('scroll', function() {
+                // Calculate which slide is currently most visible
+                const scrollLeft = sliderContainer.scrollLeft;
+                const newIndex = Math.round(scrollLeft / slideWidth);
+                
+                if (newIndex !== currentIndex) {
+                    currentIndex = newIndex;
+                    updateButtonStates();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
