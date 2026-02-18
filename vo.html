@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ינאי בן נח – קריינות ודיבוב</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&family=Frank+Ruhl+Libre:wght@400;700;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f7f5f0;
+      --surface: #ffffff;
+      --border: #e0dbd0;
+      --gold: #b8922a;
+      --gold-light: #c9a84c;
+      --text: #1a1a1a;
+      --text-dim: #666;
+      --radius: 12px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Heebo', sans-serif;
+      min-height: 100vh;
+      direction: rtl;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(247,245,240,0.95);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 clamp(16px, 4vw, 60px);
+    }
+
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding: 16px 0;
+    }
+
+    .header-title {
+      font-family: 'Frank Ruhl Libre', serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+      line-height: 1.2;
+      color: #1a1a1a;
+      white-space: nowrap;
+    }
+    .header-title strong {
+      font-weight: 900;
+    }
+    .header-title span {
+      font-weight: 400;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-family: 'Heebo', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.15s, box-shadow 0.15s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-whatsapp {
+      background: #25D366;
+      color: #fff;
+    }
+    .btn-email {
+      background: transparent;
+      color: var(--gold);
+      border: 1.5px solid var(--gold);
+    }
+    .btn-email:hover { background: rgba(184,146,42,0.08); }
+
+    .btn svg { width: 17px; height: 17px; fill: currentColor; flex-shrink: 0; }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: clamp(24px, 4vw, 48px) clamp(16px, 4vw, 60px);
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      font-weight: 700;
+    }
+
+    .card-description {
+      padding: 14px 16px;
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      line-height: 1.55;
+      border-top: 1px solid var(--border);
+      flex: 1;
+    }
+
+    /* ── GRID ── */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+      gap: 24px;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.45s ease forwards;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .card:hover {
+      border-color: var(--gold);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .embed-wrapper {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .embed-wrapper iframe,
+    .embed-wrapper blockquote {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* TikTok special: their embed doesn't fill naturally */
+    .embed-wrapper.tiktok {
+      aspect-ratio: 9 / 16;
+      max-height: 560px;
+    }
+    .embed-wrapper.tiktok blockquote {
+      position: relative;
+      inset: auto;
+      width: 100%;
+      height: 100%;
+      margin: 0 !important;
+    }
+
+    /* Facebook */
+    .embed-wrapper.facebook {
+      aspect-ratio: 1 / 1;
+    }
+
+    .card-source-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 6px;
+    }
+    .tag-youtube  { background: #ff000022; color: #ff4444; }
+    .tag-facebook { background: #1877f222; color: #60a5fa; }
+    .tag-tiktok   { background: #010101; color: #69c9d0; border: 1px solid #333; }
+    .tag-instagram{ background: #e1306c22; color: #f06292; }
+
+    /* ── LOAD MORE ── */
+    #load-sentinel { height: 1px; }
+
+    .loading-indicator {
+      text-align: center;
+      padding: 32px;
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      display: none;
+    }
+    .loading-indicator.visible { display: block; }
+
+    /* ── RESPONSIVE tweaks ── */
+    @media (max-width: 480px) {
+      .header-inner { gap: 10px; }
+      .btn { padding: 8px 12px; font-size: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════
+     HEADER – always visible
+     ════════════════════════════════ -->
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="header-title"><strong>ינאי בן נח</strong> <span>- קריינות ודיבוב</span></div>
+    </div>
+    <div class="header-actions">
+      <a class="btn btn-whatsapp" href="https://wa.me/972525363323" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        לשליחת ווטסאפ
+      </a>
+      <a class="btn btn-email" href="/cdn-cgi/l/email-protection#f5ac949b948cb7bbb59298949c99db969a98">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        לשליחת מייל
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ════════════════════════════════
+     MAIN PORTFOLIO GRID
+     ════════════════════════════════ -->
+<main>
+  <div class="section-label">תיק עבודות</div>
+  <div class="portfolio-grid" id="grid"></div>
+  <div id="load-sentinel"></div>
+  <div class="loading-indicator" id="loading-indicator">טוען עוד...</div>
+</main>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ══════════════════════════════════════════════════════════
+   ★  ADD YOUR LINKS HERE  ★
+   Each entry needs:
+     url  – the full link (YouTube / Facebook / TikTok / Instagram)
+     desc – short description shown under the embed
+   ══════════════════════════════════════════════════════════ */
+const PORTFOLIO = [
+  {
+    url: "https://www.instagram.com/reel/DUBM71DEV-U/?igsh=aXhyZTVhazByd2Yz",
+    desc: "בלדי - מתחיל בשדה, נגמר בחיוך"
+  },
+  {
+    url: "https://www.youtube.com/watch?v=MwP5NhPIUUs",
+    desc: "רויאלטי חוגגת 50 שנה"
+  },
+  {
+    url: "https://www.youtube.com/watch?v=BTLtGAdPgMo",
+    desc: "הפניקס - אקסלנס טרייד 3"
+  },
+  {
+    url: "https://www.youtube.com/watch?v=azRjNLRIK3M",
+    desc: "בננה - דקת תוכן לערוץ הספורט"
+  },
+  {
+    url: "https://www.youtube.com/watch?v=Mn7finhJn_0",
+    desc: "MOOD מועדון הארוחות - RUBEN"
+  },
+  {
+    url: "https://www.youtube.com/watch?v=2yNcpusj6-4",
+    desc: "הפניקס - אקסלנס טרייד 2"
+  },
+  {
+    url: "https://www.youtube.com/watch?v=-9FvTenfI2Y",
+    desc: "בלדי - אנגלית במבטא אמריקאי"
+  },
+  {
+    url: "https://www.youtube.com/watch?v=AJyGzFV0PzQ",
+    desc: "בלדי - אנגלית במבטא בריטי"
+  },
+  {
+    url: "https://www.youtube.com/watch?v=xhPtq8bYR-I",
+    desc: "רם אדרת - הרובע הבינלאומי"
+  },
+  {
+    url: "https://www.youtube.com/watch?v=Nqd7IxHpnhM",
+    desc: "הפניקס - אקסלנס טרייד 1"
+  },
+  {
+    url: "https://www.youtube.com/watch?v=L-0ujR9Kaz8",
+    desc: "ליצ'י - דקת תוכן לערוץ 13"
+  },
+];
+
+/* ══ Helpers ══ */
+function detectSource(url) {
+  if (/youtube\.com|youtu\.be/.test(url))  return 'youtube';
+  if (/facebook\.com/.test(url))           return 'facebook';
+  if (/tiktok\.com/.test(url))             return 'tiktok';
+  if (/instagram\.com/.test(url))          return 'instagram';
+  return 'unknown';
+}
+
+function youtubeId(url) {
+  const m = url.match(/(?:v=|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+
+function instagramEmbedUrl(url) {
+  // normalise to /embed/
+  return url.replace(/\/?$/, '/embed/');
+}
+
+function buildEmbed(url, source) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'embed-wrapper';
+
+  if (source === 'youtube') {
+    const id = youtubeId(url);
+    if (!id) return null;
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://www.youtube.com/embed/${id}`;
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    iframe.allowFullscreen = true;
+    iframe.loading = 'lazy';
+    wrapper.appendChild(iframe);
+
+  } else if (source === 'facebook') {
+    const iframe = document.createElement('iframe');
+    const encoded = encodeURIComponent(url);
+    iframe.src = `https://www.facebook.com/plugins/video.php?href=${encoded}&show_text=false&width=560`;
+    iframe.allow = 'autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share';
+    iframe.allowFullscreen = true;
+    iframe.loading = 'lazy';
+    wrapper.classList.add('facebook');
+    wrapper.appendChild(iframe);
+
+  } else if (source === 'tiktok') {
+    wrapper.classList.add('tiktok');
+    // Extract video ID from URL like tiktok.com/@user/video/12345
+    const m = url.match(/video\/(\d+)/);
+    const videoId = m ? m[1] : null;
+    if (!videoId) return null;
+    const blockquote = document.createElement('blockquote');
+    blockquote.className = 'tiktok-embed';
+    blockquote.cite = url;
+    blockquote.setAttribute('data-video-id', videoId);
+    blockquote.style.cssText = 'max-width:605px;min-width:325px;';
+    wrapper.appendChild(blockquote);
+    // Load TikTok script once
+    if (!document.querySelector('script[src*="tiktok"]')) {
+      const s = document.createElement('script');
+      s.src = 'https://www.tiktok.com/embed.js';
+      s.async = true;
+      document.body.appendChild(s);
+    } else if (window.tiktokEmbed) {
+      window.tiktokEmbed.lib.render(wrapper.querySelectorAll('.tiktok-embed'));
+    }
+
+  } else if (source === 'instagram') {
+    const iframe = document.createElement('iframe');
+    iframe.src = instagramEmbedUrl(url);
+    iframe.allow = 'autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share';
+    iframe.allowFullscreen = true;
+    iframe.loading = 'lazy';
+    wrapper.classList.add('facebook'); // square-ish
+    wrapper.appendChild(iframe);
+  }
+
+  return wrapper;
+}
+
+function createCard(item, index) {
+  const source = detectSource(item.url);
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.style.animationDelay = `${(index % 10) * 60}ms`;
+
+  const embedWrapper = buildEmbed(item.url, source);
+  if (embedWrapper) card.appendChild(embedWrapper);
+
+  const desc = document.createElement('div');
+  desc.className = 'card-description';
+
+  const tagLabels = { youtube: 'YouTube', facebook: 'Facebook', tiktok: 'TikTok', instagram: 'Instagram' };
+  const tag = document.createElement('span');
+  tag.className = `card-source-tag tag-${source}`;
+  tag.textContent = tagLabels[source] || source;
+  desc.appendChild(tag);
+
+  const text = document.createElement('p');
+  text.textContent = item.desc;
+  desc.appendChild(text);
+
+  card.appendChild(desc);
+  return card;
+}
+
+/* ══ Lazy-load / Infinite scroll ══ */
+const BATCH = 10;
+let loaded = 0;
+const grid = document.getElementById('grid');
+const sentinel = document.getElementById('load-sentinel');
+const loadingIndicator = document.getElementById('loading-indicator');
+
+function loadBatch() {
+  if (loaded >= PORTFOLIO.length) return;
+  loadingIndicator.classList.add('visible');
+
+  // Small timeout so UI doesn't freeze on heavy embed scripts
+  setTimeout(() => {
+    const end = Math.min(loaded + BATCH, PORTFOLIO.length);
+    for (let i = loaded; i < end; i++) {
+      grid.appendChild(createCard(PORTFOLIO[i], i));
+    }
+    loaded = end;
+    loadingIndicator.classList.remove('visible');
+  }, 50);
+}
+
+const observer = new IntersectionObserver(entries => {
+  if (entri
