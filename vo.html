@@ -37,7 +37,7 @@
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
-    padding: 16px 24px;
+    padding: 20px 28px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -46,7 +46,7 @@
   }
 
   .site-title {
-    font-size: clamp(1.4rem, 4.5vw, 3rem);
+    font-size: clamp(1.6rem, 5vw, 3.5rem);
     font-weight: 900;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
     -webkit-background-clip: text;
@@ -85,7 +85,7 @@
 
   /* MAIN */
   main {
-    padding-top: 100px;
+    padding-top: 120px;
     padding-bottom: 60px;
   }
 
@@ -127,31 +127,22 @@
   }
   .embed-wrapper iframe {
     position: absolute;
-    border: none;
-    display: block;
-  }
-  /* Vertical clips: scale down and center inside the 16:9 box */
-  .iframe-normal {
     top: 0; left: 0;
     width: 100%; height: 100%;
+    border: none;
+    display: block;
+    transform-origin: center center;
   }
-  /* Vertical clips: scale UP to fill the 16:9 box (crops sides, centered) */
-  .iframe-vertical {
-    /* A 9:16 clip filling a 16:9 box: height must be 100%, width = 100% * (16/9)/(9/16) = 316.4% */
-    width: 316.4%;
-    height: 100%;
-    left: 50%;
-    top: 0;
-    transform: translateX(-50%);
-  }
-  .iframe-reel {
-    /* A 4:5 reel filling a 16:9 box: width = 100% * (16/9)/(4/5) = 222.2% */
-    width: 222.2%;
-    height: 100%;
-    left: 50%;
-    top: 0;
-    transform: translateX(-50%);
-  }
+  /* Normal horizontal video — no scaling needed */
+  .iframe-normal { transform: none; }
+  /*
+   * Shorts/TikTok (9:16) inside 16:9 box:
+   * YouTube renders the short centered with black bars left/right.
+   * Scale up by 16/9 ÷ 9/16 = 3.16 to fill width (crops top/bottom a bit).
+   */
+  .iframe-vertical { transform: scale(3.2); }
+  /* Reels (approx 4:5) inside 16:9: scale up to fill */
+  .iframe-reel { transform: scale(2.25); }
 
   /* CARD DESCRIPTION */
   .card-desc {
@@ -190,7 +181,7 @@
 
   @media (max-width: 500px) {
     header { padding: 9px 12px; }
-    .site-title { font-size: 1rem; }
+    .site-title { font-size: 1.2rem; }
     .btn { padding: 7px 12px; font-size: 0.75rem; }
     .portfolio-grid { grid-template-columns: 1fr; padding: 0 10px; }
   }
