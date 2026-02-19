@@ -273,14 +273,13 @@ function loadMore() {
 }
 
 // Infinite scroll
-// Infinite scroll
+// Load first batch, then start watching sentinel
+loadMore();
+
 var obs = new IntersectionObserver(function(e) {
   if (e[0].isIntersecting) loadMore();
-}, { rootMargin: '300px' });
+}, { rootMargin: '200px' });
 obs.observe(sent);
-
-// First batch
-loadMore();
 </script>
 </body>
 </html>
