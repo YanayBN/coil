@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ינאי בן נח - קריאייטיב קופירייטר</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Heebo', sans-serif;
+  background: #0a0a0f;
+  color: #e8e8f0;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(10,10,15,0.96);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid #222233;
+  padding: 18px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.site-title {
+  font-size: clamp(1.4rem, 3.5vw, 2.8rem);
+  font-weight: 900;
+  background: linear-gradient(135deg, #c8a96e, #e8c98e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+}
+
+.header-buttons { display: flex; gap: 10px; flex-shrink: 0; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 20px;
+  border-radius: 50px;
+  font-family: 'Heebo', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
+.btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+.btn-wa    { background: #25D366; color: #fff; }
+.btn-email { background: transparent; color: #c8a96e; border: 1.5px solid #c8a96e; }
+.btn-email:hover { background: rgba(200,169,110,0.1); }
+
+/* ── MAIN ── */
+main { padding-top: 110px; padding-bottom: 60px; }
+
+/* ── GRID ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(336px, 1fr));
+  gap: 24px;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px 24px 0;
+}
+
+/* ── CARD ── */
+.card {
+  background: #13131a;
+  border: 1px solid #222233;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: fadeUp 0.35s ease both;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 40px rgba(0,0,0,0.55), 0 0 0 1px rgba(200,169,110,0.2);
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── VIDEO FRAME ── */
+/* All videos sit in a 16:9 box */
+.video-box {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 */
+  background: #000;
+  overflow: hidden;
+}
+.video-box iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: none;
+}
+
+/* ── CARD FOOTER ── */
+.card-foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-top: 1px solid #222233;
+}
+.badge {
+  width: 26px; height: 26px;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.yt { background: #f00; }
+.fb { background: #1877F2; }
+.tt { background: #111; border: 1px solid #444; }
+.ig { background: radial-gradient(circle at 30% 110%, #fdf497, #fd5949, #d6249f, #285AEB); }
+.card-foot p { font-size: 0.84rem; color: #888899; line-height: 1.4; }
+
+/* ── LOADING ── */
+#sentinel { height: 1px; margin-top: 40px; }
+#loading  { text-align: center; padding: 20px; color: #888899; font-size: 0.85rem; display: none; }
+#loading.on { display: block; }
+
+@media (max-width: 560px) {
+  header { padding: 12px 14px; }
+  .site-title { font-size: 1.1rem; }
+  .btn { padding: 8px 13px; font-size: 0.78rem; }
+  .grid { grid-template-columns: 1fr; padding: 16px 12px 0; }
+}
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">הכל מהקול: ינאי בן נח - קריין ומדבב</div>
+  <div class="header-buttons">
+    <a class="btn btn-wa" href="https://wa.me/972525363323" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.853L.073 23.927l6.244-1.635A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.894a9.882 9.882 0 01-5.031-1.369l-.361-.214-3.741.98 1.001-3.651-.235-.374A9.861 9.861 0 012.106 12C2.106 6.58 6.58 2.106 12 2.106S21.894 6.58 21.894 12 17.42 21.894 12 21.894z"/></svg>
+      לשליחת ווטסאפ
+    </a>
+    <a class="btn btn-email" href="/cdn-cgi/l/email-protection#c29ba3aca3bb808c82a5afa3abaeeca1adaf">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+      לשליחת מייל
+    </a>
+  </div>
+</header>
+
+<main>
+  <div class="grid" id="grid"></div>
+  <div id="loading">טוען...</div>
+  <div id="sentinel"></div>
+</main>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ══════════════════════════════════════════════════════════════
+//  ✏️  הוסף קישורים כאן
+//  url  = קישור מלא (YouTube / Instagram / Facebook / TikTok)
+//  desc = תיאור קצר
+// ══════════════════════════════════════════════════════════════
+var ITEMS = [
+  { url: "https://youtube.com/shorts/BCj5suZnkdM",      desc: "קבוצת קלי - סיכום שנת 2025" },
+  { url: "https://www.youtube.com/watch?v=VHDKd_NYgBA", desc: "Happy Lemon - כריזה לקניון" },
+  { url: "https://www.youtube.com/watch?v=1izQMwfgJ9Q", desc: "מטבחי אביבי - מיתוג מחדש" },
+  { url: "https://www.instagram.com/reel/DUBM71DEV-U/", desc: "בלדי - מתחיל בשדה, נגמר בחיוך" },
+  { url: "https://www.youtube.com/watch?v=AJyGzFV0PzQ", desc: "בלדי - אנגלית במבטא בריטי" },
+  { url: "https://www.youtube.com/watch?v=MwP5NhPIUUs", desc: "רויאלטי חוגגת 50 שנה" },
+  { url: "https://www.youtube.com/watch?v=BTLtGAdPgMo", desc: "הפניקס - אקסלנס טרייד 3" },
+  { url: "https://www.youtube.com/watch?v=azRjNLRIK3M", desc: "בננה - דקת תוכן לערוץ הספורט" },
+  { url: "https://www.youtube.com/watch?v=Mn7finhJn_0", desc: "MOOD מועדון הארוחות - RUBEN" },
+  { url: "https://www.youtube.com/watch?v=2yNcpusj6-4", desc: "הפניקס - אקסלנס טרייד 2" },
+  { url: "https://www.youtube.com/watch?v=-9FvTenfI2Y", desc: "בלדי - אנגלית במבטא אמריקאי" },
+  { url: "https://www.youtube.com/watch?v=xhPtq8bYR-I", desc: "רם אדרת - הרובע הבינלאומי" },
+  { url: "https://www.youtube.com/watch?v=Nqd7IxHpnhM", desc: "הפניקס - אקסלנס טרייד 1" },
+  { url: "https://www.youtube.com/watch?v=L-0ujR9Kaz8", desc: "ליצ'י - דקת תוכן לערוץ 13" },
+];
+// ══════════════════════════════════════════════════════════════
+
+var PAGE  = 10;
+var done  = 0;
+var grid  = document.getElementById('grid');
+var msg   = document.getElementById('loading');
+var sent  = document.getElementById('sentinel');
+
+var YT_ICON = '<svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 00.5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 002.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 002.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.75 15.5V8.5l6.25 3.5-6.25 3.5z"/></svg>';
+var IG_ICON = '<svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8 0 3.2 0 3.6-.1 4.8-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.9.1-3.2 0-3.6 0-4.8-.1-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12c0-3.2 0-3.6.1-4.8C2.4 3.9 4 2.3 7.2 2.3c1.2-.1 1.6-.1 4.8-.1zm0-2.2C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9C.3 21.3 2.7 23.7 7.1 23.9 8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7C24 15.7 24 15.3 24 12s0-3.7-.1-4.9C23.7 2.7 21.3.3 16.9.1 15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4A6.2 6.2 0 0012 5.8zm0 10.2a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg>';
+var FB_ICON = '<svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M24 12a12 12 0 10-13.9 11.9v-8.4H7v-3.5h3.1V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3H15.8c-1.5 0-2 .9-2 1.9v2.2h3.3l-.5 3.5h-2.8v8.4A12 12 0 0024 12z"/></svg>';
+var TT_ICON = '<svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>';
+
+function makeCard(item, delay) {
+  var url  = item.url;
+  var desc = item.desc;
+  var src  = '';
+  var badgeClass = '';
+  var icon = '';
+
+  if (/youtu/.test(url)) {
+    var m = url.match(/(?:v=|youtu\.be\/|shorts\/)([A-Za-z0-9_-]{11})/);
+    if (!m) return null;
+    src = 'https://www.youtube.com/embed/' + m[1];
+    badgeClass = 'yt'; icon = YT_ICON;
+
+  } else if (/instagram/.test(url)) {
+    var m2 = url.match(/\/(?:p|reel)\/([A-Za-z0-9_-]+)/);
+    if (!m2) return null;
+    src = 'https://www.instagram.com/p/' + m2[1] + '/embed/';
+    badgeClass = 'ig'; icon = IG_ICON;
+
+  } else if (/facebook|fb\.watch/.test(url)) {
+    src = 'https://www.facebook.com/plugins/video.php?href=' + encodeURIComponent(url) + '&show_text=false&width=560';
+    badgeClass = 'fb'; icon = FB_ICON;
+
+  } else if (/tiktok/.test(url)) {
+    var m3 = url.match(/video\/(\d+)/);
+    if (!m3) return null;
+    src = 'https://www.tiktok.com/embed/v2/' + m3[1];
+    badgeClass = 'tt'; icon = TT_ICON;
+
+  } else {
+    return null;
+  }
+
+  var card = document.createElement('div');
+  card.className = 'card';
+  card.style.animationDelay = (delay * 60) + 'ms';
+
+  var box = document.createElement('div');
+  box.className = 'video-box';
+
+  var iframe = document.createElement('iframe');
+  iframe.src = src;
+  iframe.setAttribute('loading', 'lazy');
+  iframe.setAttribute('allowfullscreen', '');
+  iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+
+  box.appendChild(iframe);
+
+  var foot = document.createElement('div');
+  foot.className = 'card-foot';
+  foot.innerHTML = '<div class="badge ' + badgeClass + '">' + icon + '</div><p>' + desc + '</p>';
+
+  card.appendChild(box);
+  card.appendChild(foot);
+  return card;
+}
+
+function loadMore() {
+  if (done >= ITEMS.length) return;
+  msg.classList.add('on');
+  var batch = ITEMS.slice(done, done + PAGE);
+  for (var i = 0; i < batch.length; i++) {
+    var card = makeCard(batch[i], i);
+    if (card) grid.appendChild(card);
+  }
+  done += batch.length;
+  msg.classList.remove('on');
+}
+
+// Infinite scroll
+// Load first batch, then start watching sentinel
+loadMore();
+
+var obs = new IntersectionObserver(function(e) {
+  if (e[0].isIntersecting) loadMore();
+}, { rootMargin: '200px' });
+obs.observe(sent);
+</script>
+</body>
+</html>
