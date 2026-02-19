@@ -37,7 +37,7 @@
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
-    padding: 12px 20px;
+    padding: 16px 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -46,7 +46,7 @@
   }
 
   .site-title {
-    font-size: clamp(0.85rem, 2.5vw, 1.25rem);
+    font-size: clamp(1.4rem, 4.5vw, 3rem);
     font-weight: 900;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
     -webkit-background-clip: text;
@@ -85,14 +85,14 @@
 
   /* MAIN */
   main {
-    padding-top: 80px;
+    padding-top: 100px;
     padding-bottom: 60px;
   }
 
   /* GRID */
   .portfolio-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
     gap: 20px;
     max-width: 1400px;
     margin: 24px auto 0;
@@ -117,23 +117,41 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* EMBED WRAPPERS */
+  /* EMBED WRAPPERS — all horizontal 16:9 */
   .embed-wrapper {
     position: relative;
     width: 100%;
     background: #000;
     overflow: hidden;
+    padding-bottom: 56.25%;
   }
   .embed-wrapper iframe {
     position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
     border: none;
     display: block;
   }
-  .ratio-16-9  { padding-bottom: 56.25%; }
-  .ratio-short { padding-bottom: 177.78%; }
-  .ratio-reel  { padding-bottom: 125%; }
+  /* Vertical clips: scale down and center inside the 16:9 box */
+  .iframe-normal {
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+  }
+  /* Vertical clips: scale UP to fill the 16:9 box (crops sides, centered) */
+  .iframe-vertical {
+    /* A 9:16 clip filling a 16:9 box: height must be 100%, width = 100% * (16/9)/(9/16) = 316.4% */
+    width: 316.4%;
+    height: 100%;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+  }
+  .iframe-reel {
+    /* A 4:5 reel filling a 16:9 box: width = 100% * (16/9)/(4/5) = 222.2% */
+    width: 222.2%;
+    height: 100%;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+  }
 
   /* CARD DESCRIPTION */
   .card-desc {
@@ -172,9 +190,9 @@
 
   @media (max-width: 500px) {
     header { padding: 9px 12px; }
-    .site-title { font-size: 0.8rem; }
+    .site-title { font-size: 1rem; }
     .btn { padding: 7px 12px; font-size: 0.75rem; }
-    .portfolio-grid { grid-template-columns: 1fr; padding: 0 12px; }
+    .portfolio-grid { grid-template-columns: 1fr; padding: 0 10px; }
   }
 </style>
 </head>
@@ -190,7 +208,7 @@
       </svg>
       לשליחת ווטסאפ
     </a>
-    <a class="btn btn-email" href="mailto:YanayBN@gmail.com">
+    <a class="btn btn-email" href="/cdn-cgi/l/email-protection#3c655d525d457e727c5b515d5550125f5351">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="2" y="4" width="20" height="16" rx="2"/>
         <path d="m2 7 10 7 10-7"/>
@@ -206,7 +224,7 @@
   <div id="load-sentinel"></div>
 </main>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ══════════════════════════════════════════════════════════════
 //  ✏️  הוסף קישורים כאן — פשוט הוסף שורה לרשימה
 //  url  = הקישור המלא (YouTube / Instagram / Facebook / TikTok)
@@ -270,25 +288,25 @@ var ICONS = {
 function buildCard(item, delay) {
   var p = getPlatform(item.url);
   var src = '';
-  var ratio = 'ratio-16-9';
+  var iframeClass = 'iframe-normal';
 
   if (p === 'youtube') {
     var id = getYTId(item.url);
     if (!id) return null;
     src = 'https://www.youtube.com/embed/' + id;
-    if (/shorts/.test(item.url)) ratio = 'ratio-short';
+    if (/shorts/.test(item.url)) iframeClass = 'iframe-vertical';
   } else if (p === 'facebook') {
     src = 'https://www.facebook.com/plugins/video.php?href=' + encodeURIComponent(item.url) + '&show_text=false&width=560';
   } else if (p === 'tiktok') {
     var ttid = getTTId(item.url);
     if (!ttid) return null;
     src = 'https://www.tiktok.com/embed/v2/' + ttid;
-    ratio = 'ratio-short';
+    iframeClass = 'iframe-vertical';
   } else if (p === 'instagram') {
     var igid = getIGId(item.url);
     if (!igid) return null;
     src = 'https://www.instagram.com/p/' + igid + '/embed/';
-    ratio = 'ratio-reel';
+    iframeClass = 'iframe-reel';
   } else {
     return null;
   }
@@ -298,12 +316,13 @@ function buildCard(item, delay) {
   card.style.animationDelay = delay + 'ms';
 
   var wrapper = document.createElement('div');
-  wrapper.className = 'embed-wrapper ' + ratio;
+  wrapper.className = 'embed-wrapper';
 
   var iframe = document.createElement('iframe');
   iframe.src = src;
   iframe.loading = 'lazy';
   iframe.allowFullscreen = true;
+  iframe.className = iframeClass;
   iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
 
   wrapper.appendChild(iframe);
@@ -334,14 +353,4 @@ if ('IntersectionObserver' in window) {
   var observer = new IntersectionObserver(function(entries) {
     if (entries[0].isIntersecting) loadMore();
   }, { rootMargin: '400px' });
-  observer.observe(sentinel);
-} else {
-  // Fallback: load all at once
-  while (loaded < PORTFOLIO.length) loadMore();
-}
-
-// Initial load
-loadMore();
-</script>
-</body>
-</html>
+  observer.observe(sentinel)
