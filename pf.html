@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ינאי בן טפוליו</title>
+<title>ינאי בן נח - קריאייטיב קופירייטר - פורטפוליו</title>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
 
@@ -105,7 +105,7 @@ main { padding-top: 110px; padding-bottom: 60px; }
   overflow: hidden;
 }
 
-/* Full-fill: YouTube, images, Wikipedia */
+/* Full-fill: YouTube, images, Wikipedia, Facebook, Instagram */
 .media-box iframe,
 .media-box img {
   position: absolute;
@@ -115,11 +115,7 @@ main { padding-top: 110px; padding-bottom: 60px; }
 }
 .media-box img { object-fit: cover; }
 
-/*
-  Instagram & Facebook are 4:5 or 1:1 — fit by narrowing width.
-  9:16 fitted inside 16:9 → width = (9/16)/(16/9) = 81/256 ≈ 31.64%
-  But Instagram/FB embed ~4:5, so width = (4/5)/(16/9) = 36/80 = 45%
-*/
+/* Instagram & Facebook: narrower content, centered */
 .media-box iframe.ig,
 .media-box iframe.fb {
   width: 45%;
@@ -129,15 +125,25 @@ main { padding-top: 110px; padding-bottom: 60px; }
 }
 
 /*
-  TikTok embed/v2 renders the video in a player that's roughly 3:4 overall
-  (video area ~9:16, but player chrome makes the effective ratio ~3:4).
-  3:4 fitted inside 16:9 → width = (3/4)/(16/9) = 27/64 ≈ 42%
+  TikTok embed/v2 refuses to render at arbitrary sizes — it needs real pixels.
+  We give it a fixed 320x570 inner element, then use CSS scale() to shrink
+  the whole thing so it fits inside the 16:9 box without cropping.
+  The .tt-wrap sits centered in the box; JS sets --tt-scale per card width.
 */
-.media-box iframe.tt {
-  width: 42%;
-  height: 100%;
+.tt-wrap {
+  position: absolute;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  width: 320px;
+  height: 570px;
+  transform-origin: center center;
+  transform: translate(-50%, -50%) scale(var(--tt-scale, 0.52));
+}
+.tt-wrap iframe {
+  position: static !important;
+  width: 320px !important;
+  height: 570px !important;
+  border: none;
 }
 
 /* ── CARD FOOTER ── */
@@ -271,27 +277,43 @@ function makeCard(item, delay) {
 
   if (item.type === 'img') {
     var img = document.createElement('img');
-    img.src = item.src;
+    // ensure https (http images blocked on https pages)
+    img.src = item.src.replace(/^http:\/\//i, 'https://');
     img.alt = item.desc;
     img.loading = 'lazy';
     box.appendChild(img);
-  } else {
+
+  } else if (item.type === 'tt') {
+    // TikTok: fixed-size player inside a scaled wrapper
+    var wrap = document.createElement('div');
+    wrap.className = 'tt-wrap';
     var iframe = document.createElement('iframe');
     iframe.src = item.src;
     iframe.loading = 'lazy';
-    // per-platform class for sizing
-    iframe.className = item.type; // 'yt', 'tt', 'ig', 'fb', 'wp' — CSS targets tt/ig/fb
+    iframe.setAttribute('allow', 'autoplay; encrypted-media');
+    wrap.appendChild(iframe);
+    box.appendChild(wrap);
+    // Compute scale so the 320px-wide player fills the box height (56.25% of card width)
+    // boxHeight = cardWidth * 0.5625; scale = boxHeight / 570
+    // We set it after the card is in the DOM via ResizeObserver, but set a good default now.
+    // default scale: for a 336px card → boxH = 189px → scale = 189/570 ≈ 0.33
+    // We'll update it on layout via a data attribute approach below.
+    wrap.dataset.ttWrap = '1';
+
+  } else {
+    var ifr = document.createElement('iframe');
+    ifr.src = item.src;
+    ifr.loading = 'lazy';
+    ifr.className = item.type;
     if (item.type === 'yt' || item.type === 'wp') {
-      iframe.allowFullscreen = true;
-      iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
-    } else if (item.type === 'tt') {
-      iframe.setAttribute('allow', 'autoplay; encrypted-media');
+      ifr.allowFullscreen = true;
+      ifr.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
     } else if (item.type === 'ig' || item.type === 'fb') {
-      iframe.scrolling = 'no';
-      iframe.setAttribute('allowtransparency', 'true');
-      if (item.type === 'fb') iframe.setAttribute('allow', 'encrypted-media');
+      ifr.scrolling = 'no';
+      ifr.setAttribute('allowtransparency', 'true');
+      if (item.type === 'fb') ifr.setAttribute('allow', 'encrypted-media');
     }
-    box.appendChild(iframe);
+    box.appendChild(ifr);
   }
 
   var foot = document.createElement('div');
@@ -316,9 +338,42 @@ function loadMore() {
   grid.appendChild(frag);
   done += batch.length;
   msg.classList.remove('on');
+  // update TikTok scales after DOM settles
+  setTimeout(observeTikToks, 100);
 }
 
 loadMore(); // first 10
+
+// Dynamically set TikTok scale based on actual rendered box size
+var ro = new ResizeObserver(function(entries) {
+  entries.forEach(function(entry) {
+    var wrap = entry.target;
+    var box = wrap.parentElement;
+    if (!box) return;
+    var boxH = box.offsetHeight;
+    var boxW = box.offsetWidth;
+    // fit the 570px-tall player into the box height, but also ensure
+    // the 320px-wide player doesn't exceed the box width
+    var scaleH = boxH / 570;
+    var scaleW = boxW / 320;
+    var scale = Math.min(scaleH, scaleW);
+    wrap.style.setProperty('--tt-scale', scale);
+    wrap.style.transform = 'translate(-50%, -50%) scale(' + scale + ')';
+  });
+});
+
+// Observe all tt-wraps after each batch loads
+function observeTikToks() {
+  document.querySelectorAll('.tt-wrap').forEach(function(w) {
+    ro.observe(w.parentElement); // observe the media-box
+    // trigger immediately
+    var box = w.parentElement;
+    var boxH = box.offsetHeight;
+    var boxW = box.offsetWidth;
+    var scale = Math.min(boxH / 570, boxW / 320);
+    w.style.transform = 'translate(-50%, -50%) scale(' + scale + ')';
+  });
+}
 
 var obs = new IntersectionObserver(function(entries) {
   if (entries[0].isIntersecting) loadMore();
