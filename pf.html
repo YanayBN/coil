@@ -96,16 +96,20 @@ main { padding-top: 110px; padding-bottom: 60px; }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── MEDIA BOX — always 16:9 ── */
+/* ── MEDIA BOX ── */
 .media-box {
   position: relative;
   width: 100%;
-  padding-bottom: 56.25%;
   background: #000;
   overflow: hidden;
 }
+/* 16:9 — YouTube, images, Wikipedia, Facebook */
+.media-box.r169 { padding-bottom: 56.25%; }
+/* 4:5 — Instagram */
+.media-box.r45  { padding-bottom: 125%; }
+/* 9:16 — TikTok */
+.media-box.r916 { padding-bottom: 177.78%; }
 
-/* Full-fill: YouTube, images, Wikipedia, Facebook, Instagram */
 .media-box iframe,
 .media-box img {
   position: absolute;
@@ -114,37 +118,6 @@ main { padding-top: 110px; padding-bottom: 60px; }
   border: none;
 }
 .media-box img { object-fit: cover; }
-
-/* Instagram & Facebook: narrower content, centered */
-.media-box iframe.ig,
-.media-box iframe.fb {
-  width: 45%;
-  height: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-/*
-  TikTok embed/v2 refuses to render at arbitrary sizes — it needs real pixels.
-  We give it a fixed 320x570 inner element, then use CSS scale() to shrink
-  the whole thing so it fits inside the 16:9 box without cropping.
-  The .tt-wrap sits centered in the box; JS sets --tt-scale per card width.
-*/
-.tt-wrap {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 320px;
-  height: 570px;
-  transform-origin: center center;
-  transform: translate(-50%, -50%) scale(var(--tt-scale, 0.52));
-}
-.tt-wrap iframe {
-  position: static !important;
-  width: 320px !important;
-  height: 570px !important;
-  border: none;
-}
 
 /* ── CARD FOOTER ── */
 .card-foot {
@@ -205,7 +178,6 @@ main { padding-top: 110px; padding-bottom: 60px; }
 </main>
 
 <script>
-// ── SVG ICONS ──
 var I = {
   yt:  '<svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 00.5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 002.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 002.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.75 15.5V8.5l6.25 3.5-6.25 3.5z"/></svg>',
   fb:  '<svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M24 12a12 12 0 10-13.9 11.9v-8.4H7v-3.5h3.1V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3H15.8c-1.5 0-2 .9-2 1.9v2.2h3.3l-.5 3.5h-2.8v8.4A12 12 0 0024 12z"/></svg>',
@@ -215,57 +187,53 @@ var I = {
   wp:  '<svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93V18c0-.55-.45-1-1-1s-1 .45-1 1v1.93C7.06 19.44 4.56 16.94 4.07 14H6c.55 0 1-.45 1-1s-.45-1-1-1H4.07C4.56 8.06 7.06 5.56 10 5.07V7c0 .55.45 1 1 1s1-.45 1-1V5.07C15.94 5.56 18.44 8.06 18.93 11H17c-.55 0-1 .45-1 1s.45 1 1 1h1.93c-.49 2.94-2.99 5.44-5.93 5.93z"/></svg>'
 };
 
-// ── ITEMS ──
-// type: 'yt' | 'tt' | 'ig' | 'fb' | 'img' | 'wp'
-// src:  embed URL or image URL
+// ratio: which media-box class to use
+// 'r169' = 16:9, 'r45' = 4:5 (Instagram), 'r916' = 9:16 (TikTok)
 var ITEMS = [
-  { type:'yt',  src:'https://www.youtube.com/embed/riPOfGQjQ_8',         desc:'מאחורי הקלעים לסרט "מרשעת" עם שירי מימון' },
-  { type:'yt',  src:'https://www.youtube.com/embed/KgxOiPFjOkw',         desc:'אפליקציית קבוצת קלי - סרטון ותשדיר לפודקאסט/רדיו' },
-  { type:'fb',  src:'https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fstory.php%3Fstory_fbid%3D1399365761277066%26id%3D100036109667995%26mibextid%3DwwXIfr%26rdid%3DFUTzr99KefpWqEap&width=320&height=550&show_text=true', desc:'פרסומת לחומוס אליהו' },
-  { type:'tt',  src:'https://www.tiktok.com/embed/v2/7486512071664798984', desc:'סרטון ויראלי לקידום "מיינקראפט"' },
-  { type:'img', src:'http://www.yanaybn.co.il/images/portfolio/gladiator2.jpeg', desc:'שיווק גרילה לסרט "גלדיאטור 2"' },
-  { type:'tt',  src:'https://www.tiktok.com/embed/v2/7486028223554342151', desc:'מערכון מאחורי הקלעים לסרט "מיינקראפט" - דניס טל' },
-  { type:'img', src:'http://www.yanaybn.co.il/images/portfolio/chickenmaster.png', desc:'כתיבה לתסריט העברי של הסרט "צ\'יקן מאסטר"' },
-  { type:'tt',  src:'https://www.tiktok.com/embed/v2/7447171233914883335', desc:'המשפיענית רומי משה בשיווק ויראלי לסרט "אנורה"' },
-  { type:'ig',  src:'https://www.instagram.com/p/DHF441sNEMT/embed',     desc:'שיתוף פעולה עם "חיילים מצייצים" לסרט "חסין כאב"' },
-  { type:'tt',  src:'https://www.tiktok.com/embed/v2/7452334809155652871', desc:'המשפיען מאפין - שיווק ויראלי לסרט "סוניק 3"' },
-  { type:'yt',  src:'https://www.youtube.com/embed/GaoMf0ukcPM',          desc:'סיכום תגובות מהקרנת הסרט "רובוטריקים"' },
-  { type:'tt',  src:'https://www.tiktok.com/embed/v2/7477230981187915026', desc:'המשפיען ינון בן שושן לסרט "מיקי 17"' },
-  { type:'tt',  src:'https://www.tiktok.com/embed/v2/7479811062997552392', desc:'המשפיענית נועה גרומב לסרט "איש הכלב"' },
-  { type:'tt',  src:'https://www.tiktok.com/embed/v2/7480568932638706952', desc:'תם שקד ("נינג\'ה ישראל") לסרט "חסין כאב"' },
-  { type:'yt',  src:'https://www.youtube.com/embed/iO09S4wXTnE',          desc:'טרנזלייט ת\'יאטר - קטע קונספט מתוך הסטנדאפ' },
-  { type:'tt',  src:'https://www.tiktok.com/embed/v2/7450144220376993032', desc:'קידום לסרט "סוניק 3" בניקלודיאון' },
-  { type:'tt',  src:'https://www.tiktok.com/embed/v2/7460499012576218375', desc:'סרטון ויראלי לקידום הסרט "איש זאב"' },
-  { type:'yt',  src:'https://www.youtube.com/embed/y9v4Fm29N8c',          desc:'הסטנדאפ של הגיקים - ספיישל הנוקמים' },
-  { type:'wp',  src:'https://he.wikipedia.org/wiki/%D7%99%D7%97%D7%99%D7%93%D7%AA_%D7%94%D7%A2%D7%99%D7%9C%D7%99%D7%AA_(%D7%A1%D7%A8%D7%98,_2025)', desc:'עמוד ויקיפדיה לסרט "יחידת העילית"' },
-  { type:'tt',  src:'https://www.tiktok.com/embed/v2/7486028220618329351', desc:'מערכון מאחורי הקלעים לסרט "מיינקראפט" עם דניס טל' },
-  { type:'tt',  src:'https://www.tiktok.com/embed/v2/7452732734394354951', desc:'סרטון ויראלי לקידום הסרט "סוניק 3"' },
-  { type:'ig',  src:'https://www.instagram.com/p/DDzKSk5ov18/embed',     desc:'תוכן סושיאלי לסרט - "סוניק 3"' },
-  { type:'tt',  src:'https://www.tiktok.com/embed/v2/7165446924097654017', desc:'סטנדאפ על המשחק God of War' },
-  { type:'yt',  src:'https://www.youtube.com/embed/FH15CjoKYHM',          desc:'סרטון ויראלי לקידום הסרט "איש הכלב"' },
-  { type:'yt',  src:'https://www.youtube.com/embed/0slFjqd2AAQ',          desc:'מביכים ודרקונים - משחק תפקידים עם סטנדאפיסטים' },
-  { type:'yt',  src:'https://www.youtube.com/embed/NJ4RVuLcgxQ',          desc:'המשפיען חמוצי - שיווק ויראלי ל"חסין כאב"' },
-  { type:'tt',  src:'https://www.tiktok.com/embed/v2/7480239120799780104', desc:'המשפיען רועי פיירוולף בשיווק ויראלי לסרט "חסין כאב"' },
-  { type:'yt',  src:'https://www.youtube.com/embed/9POuKB-EHxU',          desc:'המשפיען בלאקבירד בשיווק ויראלי לסרט "פחד אלוהים"' },
-  { type:'tt',  src:'https://www.tiktok.com/embed/v2/7447147367725354248', desc:'המשפיענית דניאל ויינריב בשיווק ויראלי לסרט "אנורה"' },
-  { type:'yt',  src:'https://www.youtube.com/embed/sye7X44hciw',          desc:'מאחורי הקלעים לסרט "מרשעת" עם שירי מימון' },
-  { type:'tt',  src:'https://www.tiktok.com/embed/v2/7486381655003794706', desc:'ראיון ב-60 שניות לסרט "מיינקראפט" עם דניס טל' },
-  { type:'ig',  src:'https://www.instagram.com/p/DHaxZP_IO5_/embed',     desc:'תוכן מלווה לסרט - "סוניק 3"' },
-  { type:'tt',  src:'https://www.tiktok.com/embed/v2/7441949300738870561', desc:'המשפיען תומר כרמלי בשיווק ויראלי לסרט "פחד אלוהים"' },
-  { type:'tt',  src:'https://www.tiktok.com/embed/v2/7486028223743003911', desc:'קידום לסרט "מיינקראפט" עם דניס טל' },
-  { type:'tt',  src:'https://www.tiktok.com/embed/v2/7441944007464324360', desc:'המשפיען בלאקבירד בשיווק ויראלי לסרט "פחד אלוהים"' },
-  { type:'tt',  src:'https://www.tiktok.com/embed/v2/7439632938813213959', desc:'סרטון ויראלי לקידום הסרט "מרשעת"' },
-  { type:'ig',  src:'https://www.instagram.com/p/DEPkpocIoME/embed',     desc:'תוכן ויראלי לסרט - "סוניק 3"' },
+  { type:'yt',  ratio:'r169', src:'https://www.youtube.com/embed/riPOfGQjQ_8',         desc:'מאחורי הקלעים לסרט "מרשעת" עם שירי מימון' },
+  { type:'yt',  ratio:'r169', src:'https://www.youtube.com/embed/KgxOiPFjOkw',         desc:'אפליקציית קבוצת קלי - סרטון ותשדיר לפודקאסט/רדיו' },
+  { type:'fb',  ratio:'r169', src:'https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fstory.php%3Fstory_fbid%3D1399365761277066%26id%3D100036109667995%26mibextid%3DwwXIfr%26rdid%3DFUTzr99KefpWqEap&width=320&height=550&show_text=true', desc:'פרסומת לחומוס אליהו' },
+  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7486512071664798984', desc:'סרטון ויראלי לקידום "מיינקראפט"' },
+  { type:'img', ratio:'r169', src:'https://www.yanaybn.co.il/images/portfolio/gladiator2.jpeg', desc:'שיווק גרילה לסרט "גלדיאטור 2"' },
+  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7486028223554342151', desc:'מערכון מאחורי הקלעים לסרט "מיינקראפט" - דניס טל' },
+  { type:'img', ratio:'r169', src:'https://www.yanaybn.co.il/images/portfolio/chickenmaster.png', desc:'כתיבה לתסריט העברי של הסרט "צ\'יקן מאסטר"' },
+  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7447171233914883335', desc:'המשפיענית רומי משה בשיווק ויראלי לסרט "אנורה"' },
+  { type:'ig',  ratio:'r45',  src:'https://www.instagram.com/p/DHF441sNEMT/embed',     desc:'שיתוף פעולה עם "חיילים מצייצים" לסרט "חסין כאב"' },
+  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7452334809155652871', desc:'המשפיען מאפין - שיווק ויראלי לסרט "סוניק 3"' },
+  { type:'yt',  ratio:'r169', src:'https://www.youtube.com/embed/GaoMf0ukcPM',          desc:'סיכום תגובות מהקרנת הסרט "רובוטריקים"' },
+  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7477230981187915026', desc:'המשפיען ינון בן שושן לסרט "מיקי 17"' },
+  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7479811062997552392', desc:'המשפיענית נועה גרומב לסרט "איש הכלב"' },
+  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7480568932638706952', desc:'תם שקד ("נינג\'ה ישראל") לסרט "חסין כאב"' },
+  { type:'yt',  ratio:'r169', src:'https://www.youtube.com/embed/iO09S4wXTnE',          desc:'טרנזלייט ת\'יאטר - קטע קונספט מתוך הסטנדאפ' },
+  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7450144220376993032', desc:'קידום לסרט "סוניק 3" בניקלודיאון' },
+  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7460499012576218375', desc:'סרטון ויראלי לקידום הסרט "איש זאב"' },
+  { type:'yt',  ratio:'r169', src:'https://www.youtube.com/embed/y9v4Fm29N8c',          desc:'הסטנדאפ של הגיקים - ספיישל הנוקמים' },
+  { type:'wp',  ratio:'r169', src:'https://he.wikipedia.org/wiki/%D7%99%D7%97%D7%99%D7%93%D7%AA_%D7%94%D7%A2%D7%99%D7%9C%D7%99%D7%AA_(%D7%A1%D7%A8%D7%98,_2025)', desc:'עמוד ויקיפדיה לסרט "יחידת העילית"' },
+  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7486028220618329351', desc:'מערכון מאחורי הקלעים לסרט "מיינקראפט" עם דניס טל' },
+  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7452732734394354951', desc:'סרטון ויראלי לקידום הסרט "סוניק 3"' },
+  { type:'ig',  ratio:'r45',  src:'https://www.instagram.com/p/DDzKSk5ov18/embed',     desc:'תוכן סושיאלי לסרט - "סוניק 3"' },
+  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7165446924097654017', desc:'סטנדאפ על המשחק God of War' },
+  { type:'yt',  ratio:'r169', src:'https://www.youtube.com/embed/FH15CjoKYHM',          desc:'סרטון ויראלי לקידום הסרט "איש הכלב"' },
+  { type:'yt',  ratio:'r169', src:'https://www.youtube.com/embed/0slFjqd2AAQ',          desc:'מביכים ודרקונים - משחק תפקידים עם סטנדאפיסטים' },
+  { type:'yt',  ratio:'r169', src:'https://www.youtube.com/embed/NJ4RVuLcgxQ',          desc:'המשפיען חמוצי - שיווק ויראלי ל"חסין כאב"' },
+  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7480239120799780104', desc:'המשפיען רועי פיירוולף בשיווק ויראלי לסרט "חסין כאב"' },
+  { type:'yt',  ratio:'r169', src:'https://www.youtube.com/embed/9POuKB-EHxU',          desc:'המשפיען בלאקבירד בשיווק ויראלי לסרט "פחד אלוהים"' },
+  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7447147367725354248', desc:'המשפיענית דניאל ויינריב בשיווק ויראלי לסרט "אנורה"' },
+  { type:'yt',  ratio:'r169', src:'https://www.youtube.com/embed/sye7X44hciw',          desc:'מאחורי הקלעים לסרט "מרשעת" עם שירי מימון' },
+  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7486381655003794706', desc:'ראיון ב-60 שניות לסרט "מיינקראפט" עם דניס טל' },
+  { type:'ig',  ratio:'r45',  src:'https://www.instagram.com/p/DHaxZP_IO5_/embed',     desc:'תוכן מלווה לסרט - "סוניק 3"' },
+  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7441949300738870561', desc:'המשפיען תומר כרמלי בשיווק ויראלי לסרט "פחד אלוהים"' },
+  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7486028223743003911', desc:'קידום לסרט "מיינקראפט" עם דניס טל' },
+  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7441944007464324360', desc:'המשפיען בלאקבירד בשיווק ויראלי לסרט "פחד אלוהים"' },
+  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7439632938813213959', desc:'סרטון ויראלי לקידום הסרט "מרשעת"' },
+  { type:'ig',  ratio:'r45',  src:'https://www.instagram.com/p/DEPkpocIoME/embed',     desc:'תוכן ויראלי לסרט - "סוניק 3"' },
 ];
 
-var PAGE  = 10;
-var done  = 0;
-var grid  = document.getElementById('grid');
-var msg   = document.getElementById('loading');
-var sent  = document.getElementById('sentinel');
-
-// Badge colours
-var BADGE_CLASS = { yt:'b-yt', fb:'b-fb', tt:'b-tt', ig:'b-ig', img:'b-img', wp:'b-wp' };
+var BADGE = { yt:'b-yt', fb:'b-fb', tt:'b-tt', ig:'b-ig', img:'b-img', wp:'b-wp' };
+var PAGE = 10, done = 0;
+var grid = document.getElementById('grid');
+var msg  = document.getElementById('loading');
+var sent = document.getElementById('sentinel');
 
 function makeCard(item, delay) {
   var card = document.createElement('div');
@@ -273,54 +241,33 @@ function makeCard(item, delay) {
   card.style.animationDelay = (delay * 60) + 'ms';
 
   var box = document.createElement('div');
-  box.className = 'media-box';
+  box.className = 'media-box ' + item.ratio;
 
   if (item.type === 'img') {
-    var img = document.createElement('img');
-    // ensure https (http images blocked on https pages)
-    img.src = item.src.replace(/^http:\/\//i, 'https://');
-    img.alt = item.desc;
-    img.loading = 'lazy';
-    box.appendChild(img);
-
-  } else if (item.type === 'tt') {
-    // TikTok: fixed-size player inside a scaled wrapper
-    var wrap = document.createElement('div');
-    wrap.className = 'tt-wrap';
-    var iframe = document.createElement('iframe');
-    iframe.src = item.src;
-    iframe.loading = 'lazy';
-    iframe.setAttribute('allow', 'autoplay; encrypted-media');
-    wrap.appendChild(iframe);
-    box.appendChild(wrap);
-    // Compute scale so the 320px-wide player fills the box height (56.25% of card width)
-    // boxHeight = cardWidth * 0.5625; scale = boxHeight / 570
-    // We set it after the card is in the DOM via ResizeObserver, but set a good default now.
-    // default scale: for a 336px card → boxH = 189px → scale = 189/570 ≈ 0.33
-    // We'll update it on layout via a data attribute approach below.
-    wrap.dataset.ttWrap = '1';
-
+    var el = document.createElement('img');
+    el.src = item.src;
+    el.alt = item.desc;
+    el.loading = 'lazy';
   } else {
-    var ifr = document.createElement('iframe');
-    ifr.src = item.src;
-    ifr.loading = 'lazy';
-    ifr.className = item.type;
+    var el = document.createElement('iframe');
+    el.src = item.src;
+    el.loading = 'lazy';
+    el.setAttribute('allowfullscreen', '');
     if (item.type === 'yt' || item.type === 'wp') {
-      ifr.allowFullscreen = true;
-      ifr.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+      el.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+    } else if (item.type === 'tt') {
+      el.setAttribute('allow', 'autoplay; encrypted-media');
     } else if (item.type === 'ig' || item.type === 'fb') {
-      ifr.scrolling = 'no';
-      ifr.setAttribute('allowtransparency', 'true');
-      if (item.type === 'fb') ifr.setAttribute('allow', 'encrypted-media');
+      el.setAttribute('scrolling', 'no');
+      el.setAttribute('allowtransparency', 'true');
+      if (item.type === 'fb') el.setAttribute('allow', 'encrypted-media');
     }
-    box.appendChild(ifr);
   }
+  box.appendChild(el);
 
   var foot = document.createElement('div');
   foot.className = 'card-foot';
-  foot.innerHTML =
-    '<div class="badge ' + BADGE_CLASS[item.type] + '">' + I[item.type] + '</div>' +
-    '<p>' + item.desc + '</p>';
+  foot.innerHTML = '<div class="badge ' + BADGE[item.type] + '">' + I[item.type] + '</div><p>' + item.desc + '</p>';
 
   card.appendChild(box);
   card.appendChild(foot);
@@ -332,51 +279,16 @@ function loadMore() {
   msg.classList.add('on');
   var batch = ITEMS.slice(done, done + PAGE);
   var frag = document.createDocumentFragment();
-  for (var i = 0; i < batch.length; i++) {
-    frag.appendChild(makeCard(batch[i], i));
-  }
+  for (var i = 0; i < batch.length; i++) frag.appendChild(makeCard(batch[i], i));
   grid.appendChild(frag);
   done += batch.length;
   msg.classList.remove('on');
-  // update TikTok scales after DOM settles
-  setTimeout(observeTikToks, 100);
 }
 
-loadMore(); // first 10
+loadMore();
 
-// Dynamically set TikTok scale based on actual rendered box size
-var ro = new ResizeObserver(function(entries) {
-  entries.forEach(function(entry) {
-    var wrap = entry.target;
-    var box = wrap.parentElement;
-    if (!box) return;
-    var boxH = box.offsetHeight;
-    var boxW = box.offsetWidth;
-    // fit the 570px-tall player into the box height, but also ensure
-    // the 320px-wide player doesn't exceed the box width
-    var scaleH = boxH / 570;
-    var scaleW = boxW / 320;
-    var scale = Math.min(scaleH, scaleW);
-    wrap.style.setProperty('--tt-scale', scale);
-    wrap.style.transform = 'translate(-50%, -50%) scale(' + scale + ')';
-  });
-});
-
-// Observe all tt-wraps after each batch loads
-function observeTikToks() {
-  document.querySelectorAll('.tt-wrap').forEach(function(w) {
-    ro.observe(w.parentElement); // observe the media-box
-    // trigger immediately
-    var box = w.parentElement;
-    var boxH = box.offsetHeight;
-    var boxW = box.offsetWidth;
-    var scale = Math.min(boxH / 570, boxW / 320);
-    w.style.transform = 'translate(-50%, -50%) scale(' + scale + ')';
-  });
-}
-
-var obs = new IntersectionObserver(function(entries) {
-  if (entries[0].isIntersecting) loadMore();
+var obs = new IntersectionObserver(function(e) {
+  if (e[0].isIntersecting) loadMore();
 }, { rootMargin: '200px' });
 obs.observe(sent);
 </script>
