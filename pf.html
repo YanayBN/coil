@@ -96,28 +96,21 @@ main { padding-top: 110px; padding-bottom: 60px; }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── MEDIA BOX ── */
-.media-box {
+/* ── VIDEO FRAME ── */
+/* All videos sit in a 16:9 box */
+.video-box {
   position: relative;
   width: 100%;
+  padding-bottom: 56.25%; /* 16:9 */
   background: #000;
   overflow: hidden;
 }
-/* 16:9 — YouTube, images, Wikipedia, Facebook */
-.media-box.r169 { padding-bottom: 56.25%; }
-/* 4:5 — Instagram */
-.media-box.r45  { padding-bottom: 125%; }
-/* 9:16 — TikTok */
-.media-box.r916 { padding-bottom: 177.78%; }
-
-.media-box iframe,
-.media-box img {
+.video-box iframe {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
   border: none;
 }
-.media-box img { object-fit: cover; }
 
 /* ── CARD FOOTER ── */
 .card-foot {
@@ -133,12 +126,10 @@ main { padding-top: 110px; padding-bottom: 60px; }
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
-.b-yt  { background: #f00; }
-.b-fb  { background: #1877F2; }
-.b-tt  { background: #111; border: 1px solid #444; }
-.b-ig  { background: radial-gradient(circle at 30% 110%, #fdf497, #fd5949, #d6249f, #285AEB); }
-.b-img { background: #444; }
-.b-wp  { background: #2e6da4; }
+.yt { background: #f00; }
+.fb { background: #1877F2; }
+.tt { background: #111; border: 1px solid #444; }
+.ig { background: radial-gradient(circle at 30% 110%, #fdf497, #fd5949, #d6249f, #285AEB); }
 .card-foot p { font-size: 0.84rem; color: #888899; line-height: 1.4; }
 
 /* ── LOADING ── */
@@ -164,7 +155,7 @@ main { padding-top: 110px; padding-bottom: 60px; }
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.853L.073 23.927l6.244-1.635A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.894a9.882 9.882 0 01-5.031-1.369l-.361-.214-3.741.98 1.001-3.651-.235-.374A9.861 9.861 0 012.106 12C2.106 6.58 6.58 2.106 12 2.106S21.894 6.58 21.894 12 17.42 21.894 12 21.894z"/></svg>
       לשליחת ווטסאפ
     </a>
-    <a class="btn btn-email" href="mailto:yanaybn@gmail.com">
+    <a class="btn btn-email" href="/cdn-cgi/l/email-protection#c29ba3aca3bb808c82a5afa3abaeeca1adaf">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
       לשליחת מייל
     </a>
@@ -177,97 +168,113 @@ main { padding-top: 110px; padding-bottom: 60px; }
   <div id="sentinel"></div>
 </main>
 
-<script>
-var I = {
-  yt:  '<svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 00.5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 002.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 002.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.75 15.5V8.5l6.25 3.5-6.25 3.5z"/></svg>',
-  fb:  '<svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M24 12a12 12 0 10-13.9 11.9v-8.4H7v-3.5h3.1V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3H15.8c-1.5 0-2 .9-2 1.9v2.2h3.3l-.5 3.5h-2.8v8.4A12 12 0 0024 12z"/></svg>',
-  tt:  '<svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>',
-  ig:  '<svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8 0 3.2 0 3.6-.1 4.8-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.9.1-3.2 0-3.6 0-4.8-.1-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12c0-3.2 0-3.6.1-4.8C2.4 3.9 4 2.3 7.2 2.3c1.2-.1 1.6-.1 4.8-.1zm0-2.2C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9C.3 21.3 2.7 23.7 7.1 23.9 8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7C24 15.7 24 15.3 24 12s0-3.7-.1-4.9C23.7 2.7 21.3.3 16.9.1 15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4A6.2 6.2 0 0012 5.8zm0 10.2a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg>',
-  img: '<svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M21 19V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/></svg>',
-  wp:  '<svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93V18c0-.55-.45-1-1-1s-1 .45-1 1v1.93C7.06 19.44 4.56 16.94 4.07 14H6c.55 0 1-.45 1-1s-.45-1-1-1H4.07C4.56 8.06 7.06 5.56 10 5.07V7c0 .55.45 1 1 1s1-.45 1-1V5.07C15.94 5.56 18.44 8.06 18.93 11H17c-.55 0-1 .45-1 1s.45 1 1 1h1.93c-.49 2.94-2.99 5.44-5.93 5.93z"/></svg>'
-};
-
-// ratio: which media-box class to use
-// 'r169' = 16:9, 'r45' = 4:5 (Instagram), 'r916' = 9:16 (TikTok)
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ══════════════════════════════════════════════════════════════
+//  ✏️  הוסף קישורים כאן
+//  url  = קישור מלא (YouTube / Instagram / Facebook / TikTok)
+//  desc = תיאור קצר
+// ══════════════════════════════════════════════════════════════
 var ITEMS = [
-  { type:'yt',  ratio:'r169', src:'https://www.youtube.com/embed/riPOfGQjQ_8',         desc:'מאחורי הקלעים לסרט "מרשעת" עם שירי מימון' },
-  { type:'yt',  ratio:'r169', src:'https://www.youtube.com/embed/KgxOiPFjOkw',         desc:'אפליקציית קבוצת קלי - סרטון ותשדיר לפודקאסט/רדיו' },
-  { type:'fb',  ratio:'r169', src:'https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fstory.php%3Fstory_fbid%3D1399365761277066%26id%3D100036109667995%26mibextid%3DwwXIfr%26rdid%3DFUTzr99KefpWqEap&width=320&height=550&show_text=true', desc:'פרסומת לחומוס אליהו' },
-  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7486512071664798984', desc:'סרטון ויראלי לקידום "מיינקראפט"' },
-  { type:'img', ratio:'r169', src:'https://www.yanaybn.co.il/images/portfolio/gladiator2.jpeg', desc:'שיווק גרילה לסרט "גלדיאטור 2"' },
-  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7486028223554342151', desc:'מערכון מאחורי הקלעים לסרט "מיינקראפט" - דניס טל' },
-  { type:'img', ratio:'r169', src:'https://www.yanaybn.co.il/images/portfolio/chickenmaster.png', desc:'כתיבה לתסריט העברי של הסרט "צ\'יקן מאסטר"' },
-  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7447171233914883335', desc:'המשפיענית רומי משה בשיווק ויראלי לסרט "אנורה"' },
-  { type:'ig',  ratio:'r45',  src:'https://www.instagram.com/p/DHF441sNEMT/embed',     desc:'שיתוף פעולה עם "חיילים מצייצים" לסרט "חסין כאב"' },
-  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7452334809155652871', desc:'המשפיען מאפין - שיווק ויראלי לסרט "סוניק 3"' },
-  { type:'yt',  ratio:'r169', src:'https://www.youtube.com/embed/GaoMf0ukcPM',          desc:'סיכום תגובות מהקרנת הסרט "רובוטריקים"' },
-  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7477230981187915026', desc:'המשפיען ינון בן שושן לסרט "מיקי 17"' },
-  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7479811062997552392', desc:'המשפיענית נועה גרומב לסרט "איש הכלב"' },
-  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7480568932638706952', desc:'תם שקד ("נינג\'ה ישראל") לסרט "חסין כאב"' },
-  { type:'yt',  ratio:'r169', src:'https://www.youtube.com/embed/iO09S4wXTnE',          desc:'טרנזלייט ת\'יאטר - קטע קונספט מתוך הסטנדאפ' },
-  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7450144220376993032', desc:'קידום לסרט "סוניק 3" בניקלודיאון' },
-  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7460499012576218375', desc:'סרטון ויראלי לקידום הסרט "איש זאב"' },
-  { type:'yt',  ratio:'r169', src:'https://www.youtube.com/embed/y9v4Fm29N8c',          desc:'הסטנדאפ של הגיקים - ספיישל הנוקמים' },
-  { type:'wp',  ratio:'r169', src:'https://he.wikipedia.org/wiki/%D7%99%D7%97%D7%99%D7%93%D7%AA_%D7%94%D7%A2%D7%99%D7%9C%D7%99%D7%AA_(%D7%A1%D7%A8%D7%98,_2025)', desc:'עמוד ויקיפדיה לסרט "יחידת העילית"' },
-  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7486028220618329351', desc:'מערכון מאחורי הקלעים לסרט "מיינקראפט" עם דניס טל' },
-  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7452732734394354951', desc:'סרטון ויראלי לקידום הסרט "סוניק 3"' },
-  { type:'ig',  ratio:'r45',  src:'https://www.instagram.com/p/DDzKSk5ov18/embed',     desc:'תוכן סושיאלי לסרט - "סוניק 3"' },
-  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7165446924097654017', desc:'סטנדאפ על המשחק God of War' },
-  { type:'yt',  ratio:'r169', src:'https://www.youtube.com/embed/FH15CjoKYHM',          desc:'סרטון ויראלי לקידום הסרט "איש הכלב"' },
-  { type:'yt',  ratio:'r169', src:'https://www.youtube.com/embed/0slFjqd2AAQ',          desc:'מביכים ודרקונים - משחק תפקידים עם סטנדאפיסטים' },
-  { type:'yt',  ratio:'r169', src:'https://www.youtube.com/embed/NJ4RVuLcgxQ',          desc:'המשפיען חמוצי - שיווק ויראלי ל"חסין כאב"' },
-  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7480239120799780104', desc:'המשפיען רועי פיירוולף בשיווק ויראלי לסרט "חסין כאב"' },
-  { type:'yt',  ratio:'r169', src:'https://www.youtube.com/embed/9POuKB-EHxU',          desc:'המשפיען בלאקבירד בשיווק ויראלי לסרט "פחד אלוהים"' },
-  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7447147367725354248', desc:'המשפיענית דניאל ויינריב בשיווק ויראלי לסרט "אנורה"' },
-  { type:'yt',  ratio:'r169', src:'https://www.youtube.com/embed/sye7X44hciw',          desc:'מאחורי הקלעים לסרט "מרשעת" עם שירי מימון' },
-  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7486381655003794706', desc:'ראיון ב-60 שניות לסרט "מיינקראפט" עם דניס טל' },
-  { type:'ig',  ratio:'r45',  src:'https://www.instagram.com/p/DHaxZP_IO5_/embed',     desc:'תוכן מלווה לסרט - "סוניק 3"' },
-  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7441949300738870561', desc:'המשפיען תומר כרמלי בשיווק ויראלי לסרט "פחד אלוהים"' },
-  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7486028223743003911', desc:'קידום לסרט "מיינקראפט" עם דניס טל' },
-  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7441944007464324360', desc:'המשפיען בלאקבירד בשיווק ויראלי לסרט "פחד אלוהים"' },
-  { type:'tt',  ratio:'r916', src:'https://www.tiktok.com/embed/v2/7439632938813213959', desc:'סרטון ויראלי לקידום הסרט "מרשעת"' },
-  { type:'ig',  ratio:'r45',  src:'https://www.instagram.com/p/DEPkpocIoME/embed',     desc:'תוכן ויראלי לסרט - "סוניק 3"' },
+{ url: "https://www.youtube.com/watch?v=riPOfGQjQ_8", desc: "מאחורי הקלעים לסרט \"מרשעת\" עם שירי מימון" },
+{ url: "https://www.youtube.com/watch?v=KgxOiPFjOkw", desc: "אפליקציית קבוצת קלי - סרטון ותשדיר לפודקאסט/רדיו" },
+{ url: "https://www.facebook.com/story.php?story_fbid=1399365761277066&id=100036109667995", desc: "פרסומת לחומוס אליהו" },
+{ url: "https://www.tiktok.com/@tiktok/video/7486512071664798984", desc: "סרטון ויראלי לקידום \"מיינקראפט\"" },
+{ url: "https://www.tiktok.com/@tiktok/video/7486028223554342151", desc: "מערכון מאחורי הקלעים לסרט \"מיינקראפט\" - דניס טל" },
+{ url: "https://www.tiktok.com/@tiktok/video/7447171233914883335", desc: "המשפיענית רומי משה בשיווק ויראלי לסרט \"אנורה\"" },
+{ url: "https://www.instagram.com/p/DHF441sNEMT/", desc: "שיתוף פעולה עם \"חיילים מצייצים\" לסרט \"חסין כאב\"" },
+{ url: "https://www.tiktok.com/@tiktok/video/7452334809155652871", desc: "המשפיען מאפין - שיווק ויראלי לסרט \"סוניק 3\"" },
+{ url: "https://www.youtube.com/watch?v=GaoMf0ukcPM", desc: "סיכום תגובות מהקרנת הסרט \"רובוטריקים\"" },
+{ url: "https://www.tiktok.com/@tiktok/video/7477230981187915026", desc: "המשפיען ינון בן שושן לסרט \"מיקי 17\"" },
+{ url: "https://www.tiktok.com/@tiktok/video/7479811062997552392", desc: "המשפיענית נועה גרומב לסרט \"איש הכלב\"" },
+{ url: "https://www.tiktok.com/@tiktok/video/7480568932638706952", desc: "תם שקד (\"נינג'ה ישראל\") לסרט \"חסין כאב\"" },
+{ url: "https://www.youtube.com/watch?v=iO09S4wXTnE", desc: "טרנזלייט ת'יאטר - קטע קונספט מתוך הסטנדאפ" },
+{ url: "https://www.tiktok.com/@tiktok/video/7450144220376993032", desc: "קידום לסרט \"סוניק 3\" בניקלודיאון" },
+{ url: "https://www.tiktok.com/@tiktok/video/7460499012576218375", desc: "סרטון ויראלי לקידום הסרט \"איש זאב\"" },
+{ url: "https://www.youtube.com/watch?v=y9v4Fm29N8c", desc: "הסטנדאפ של הגיקים - ספיישל הנוקמים" },
+{ url: "https://he.wikipedia.org/wiki/יחידת_העילית_(סרט,_2025)", desc: "עמוד ויקיפדיה לסרט \"יחידת העילית\"" },
+{ url: "https://www.tiktok.com/@tiktok/video/7486028220618329351", desc: "מערכון מאחורי הקלעים לסרט \"מיינקראפט\" עם דניס טל" },
+{ url: "https://www.tiktok.com/@tiktok/video/7452732734394354951", desc: "סרטון ויראלי לקידום הסרט \"סוניק 3\"" },
+{ url: "https://www.instagram.com/p/DDzKSk5ov18/", desc: "תוכן סושיאלי לסרט - \"סוניק 3\"" },
+{ url: "https://www.tiktok.com/@tiktok/video/7165446924097654017", desc: "סטנדאפ על המשחק God of War" },
+{ url: "https://www.youtube.com/watch?v=FH15CjoKYHM", desc: "סרטון ויראלי לקידום הסרט \"איש הכלב\"" },
+{ url: "https://www.youtube.com/watch?v=0slFjqd2AAQ", desc: "מביכים ודרקונים - משחק תפקידים עם סטנדאפיסטים" },
+{ url: "https://www.youtube.com/watch?v=NJ4RVuLcgxQ", desc: "המשפיען חמוצי - שיווק ויראלי ל\"חסין כאב\"" },
+{ url: "https://www.tiktok.com/@tiktok/video/7480239120799780104", desc: "המשפיען רועי פיירוולף בשיווק ויראלי לסרט \"חסין כאב\"" },
+{ url: "https://www.youtube.com/watch?v=9POuKB-EHxU", desc: "המשפיען בלאקבירד בשיווק ויראלי לסרט \"פחד אלוהים\"" },
+{ url: "https://www.tiktok.com/@tiktok/video/7447147367725354248", desc: "המשפיענית דניאל ויינריב בשיווק ויראלי לסרט \"אנורה\"" },
+{ url: "https://www.youtube.com/watch?v=sye7X44hciw", desc: "מאחורי הקלעים לסרט \"מרשעת\" עם שירי מימון" },
+{ url: "https://www.tiktok.com/@tiktok/video/7486381655003794706", desc: "ראיון ב-60 שניות לסרט \"מיינקראפט\" עם דניס טל" },
+{ url: "https://www.instagram.com/p/DHaxZP_IO5_/", desc: "תוכן מלווה לסרט - \"סוניק 3\"" },
+{ url: "https://www.tiktok.com/@tiktok/video/7441949300738870561", desc: "המשפיען תומר כרמלי בשיווק ויראלי לסרט \"פחד אלוהים\"" },
+{ url: "https://www.tiktok.com/@tiktok/video/7486028223743003911", desc: "קידום לסרט \"מיינקראפט\" עם דניס טל" },
+{ url: "https://www.tiktok.com/@tiktok/video/7441944007464324360", desc: "המשפיען בלאקבירד בשיווק ויראלי לסרט \"פחד אלוהים\"" },
+{ url: "https://www.tiktok.com/@tiktok/video/7439632938813213959", desc: "סרטון ויראלי לקידום הסרט \"מרשעת\"" },
+{ url: "https://www.instagram.com/p/DEPkpocIoME/", desc: "תוכן ויראלי לסרט - \"סוניק 3\"" },
 ];
+// ══════════════════════════════════════════════════════════════
 
-var BADGE = { yt:'b-yt', fb:'b-fb', tt:'b-tt', ig:'b-ig', img:'b-img', wp:'b-wp' };
-var PAGE = 10, done = 0;
-var grid = document.getElementById('grid');
-var msg  = document.getElementById('loading');
-var sent = document.getElementById('sentinel');
+var PAGE  = 10;
+var done  = 0;
+var grid  = document.getElementById('grid');
+var msg   = document.getElementById('loading');
+var sent  = document.getElementById('sentinel');
+
+var YT_ICON = '<svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 00.5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 002.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 002.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.75 15.5V8.5l6.25 3.5-6.25 3.5z"/></svg>';
+var IG_ICON = '<svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8 0 3.2 0 3.6-.1 4.8-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.9.1-3.2 0-3.6 0-4.8-.1-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12c0-3.2 0-3.6.1-4.8C2.4 3.9 4 2.3 7.2 2.3c1.2-.1 1.6-.1 4.8-.1zm0-2.2C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9C.3 21.3 2.7 23.7 7.1 23.9 8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7C24 15.7 24 15.3 24 12s0-3.7-.1-4.9C23.7 2.7 21.3.3 16.9.1 15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4A6.2 6.2 0 0012 5.8zm0 10.2a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg>';
+var FB_ICON = '<svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M24 12a12 12 0 10-13.9 11.9v-8.4H7v-3.5h3.1V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3H15.8c-1.5 0-2 .9-2 1.9v2.2h3.3l-.5 3.5h-2.8v8.4A12 12 0 0024 12z"/></svg>';
+var TT_ICON = '<svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>';
 
 function makeCard(item, delay) {
+  var url  = item.url;
+  var desc = item.desc;
+  var src  = '';
+  var badgeClass = '';
+  var icon = '';
+
+  if (/youtu/.test(url)) {
+    var m = url.match(/(?:v=|youtu\.be\/|shorts\/)([A-Za-z0-9_-]{11})/);
+    if (!m) return null;
+    src = 'https://www.youtube.com/embed/' + m[1];
+    badgeClass = 'yt'; icon = YT_ICON;
+
+  } else if (/instagram/.test(url)) {
+    var m2 = url.match(/\/(?:p|reel)\/([A-Za-z0-9_-]+)/);
+    if (!m2) return null;
+    src = 'https://www.instagram.com/p/' + m2[1] + '/embed/';
+    badgeClass = 'ig'; icon = IG_ICON;
+
+  } else if (/facebook|fb\.watch/.test(url)) {
+    src = 'https://www.facebook.com/plugins/video.php?href=' + encodeURIComponent(url) + '&show_text=false&width=560';
+    badgeClass = 'fb'; icon = FB_ICON;
+
+  } else if (/tiktok/.test(url)) {
+    var m3 = url.match(/video\/(\d+)/);
+    if (!m3) return null;
+    src = 'https://www.tiktok.com/embed/v2/' + m3[1];
+    badgeClass = 'tt'; icon = TT_ICON;
+
+  } else {
+    return null;
+  }
+
   var card = document.createElement('div');
   card.className = 'card';
   card.style.animationDelay = (delay * 60) + 'ms';
 
   var box = document.createElement('div');
-  box.className = 'media-box ' + item.ratio;
+  box.className = 'video-box';
 
-  if (item.type === 'img') {
-    var el = document.createElement('img');
-    el.src = item.src;
-    el.alt = item.desc;
-    el.loading = 'lazy';
-  } else {
-    var el = document.createElement('iframe');
-    el.src = item.src;
-    el.loading = 'lazy';
-    el.setAttribute('allowfullscreen', '');
-    if (item.type === 'yt' || item.type === 'wp') {
-      el.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
-    } else if (item.type === 'tt') {
-      el.setAttribute('allow', 'autoplay; encrypted-media');
-    } else if (item.type === 'ig' || item.type === 'fb') {
-      el.setAttribute('scrolling', 'no');
-      el.setAttribute('allowtransparency', 'true');
-      if (item.type === 'fb') el.setAttribute('allow', 'encrypted-media');
-    }
-  }
-  box.appendChild(el);
+  var iframe = document.createElement('iframe');
+  iframe.src = src;
+  iframe.setAttribute('loading', 'lazy');
+  iframe.setAttribute('allowfullscreen', '');
+  iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+
+  box.appendChild(iframe);
 
   var foot = document.createElement('div');
   foot.className = 'card-foot';
-  foot.innerHTML = '<div class="badge ' + BADGE[item.type] + '">' + I[item.type] + '</div><p>' + item.desc + '</p>';
+  foot.innerHTML = '<div class="badge ' + badgeClass + '">' + icon + '</div><p>' + desc + '</p>';
 
   card.appendChild(box);
   card.appendChild(foot);
@@ -275,16 +282,19 @@ function makeCard(item, delay) {
 }
 
 function loadMore() {
-  if (done >= ITEMS.length) { obs.disconnect(); return; }
+  if (done >= ITEMS.length) return;
   msg.classList.add('on');
   var batch = ITEMS.slice(done, done + PAGE);
-  var frag = document.createDocumentFragment();
-  for (var i = 0; i < batch.length; i++) frag.appendChild(makeCard(batch[i], i));
-  grid.appendChild(frag);
+  for (var i = 0; i < batch.length; i++) {
+    var card = makeCard(batch[i], i);
+    if (card) grid.appendChild(card);
+  }
   done += batch.length;
   msg.classList.remove('on');
 }
 
+// Infinite scroll
+// Load first batch, then start watching sentinel
 loadMore();
 
 var obs = new IntersectionObserver(function(e) {
@@ -292,12 +302,5 @@ var obs = new IntersectionObserver(function(e) {
 }, { rootMargin: '200px' });
 obs.observe(sent);
 </script>
-
-<script>
-nl_pos = "br";
-nl_compact = "1";
-</script>
-<script src="./nagishli/nagishli.js?v=2.3" charset="utf-8" defer></script>
-
 </body>
 </html>
